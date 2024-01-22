@@ -16,6 +16,8 @@ services:
     image: mongo:latest
     ports:
       - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: irc
     volumes:
       - db_data:/data/db
 
@@ -29,6 +31,13 @@ services:
       - /usr/src/app/node_modules
     ports:
       - 3001:3000
+
+  mongo-gui:
+    image: ugleiton/mongo-gui
+    ports:
+      - "4321:4321"
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/irc
 
 volumes:
   db_data: {}
