@@ -1,7 +1,7 @@
 import {
     Entity,
     Unique,
-    PrimaryGeneratedColumn,
+    ObjectIdColumn,
     BeforeInsert,
     BeforeUpdate,
     Column,
@@ -10,24 +10,24 @@ import {
   import * as bcrypt from 'bcrypt';
   
   @Entity('users')
-  @Unique(['email'])
+  @Unique(['username', 'email'])
   export class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+    @ObjectIdColumn()
+    id?: string;
   
-    @BeforeInsert()
-    createUUID() {
-      this.id = uuid();
-    }
-  
-    @Column()
-    username: string;
+    //@BeforeInsert()
+    //createUUID() {
+    //  this.id = uuid();
+    //}
   
     @Column()
-    email: string;
+    username?: string;
   
     @Column()
-    password: string;
+    email?: string;
+  
+    @Column()
+    password: string = "";
   
     @BeforeInsert()
     async hashPassword() {
@@ -36,7 +36,7 @@ import {
 
   
     @Column({ type: 'datetime', name: 'created_at' })
-    createdAt: Date;
+    createdAt?: Date;
   
     @BeforeInsert()
     insertCreatedAt() {
@@ -49,7 +49,7 @@ import {
       nullable: true,
       default: null,
     })
-    updatedAt: Date;
+    updatedAt?: Date;
   
     @BeforeUpdate()
     updateTimestamp() {

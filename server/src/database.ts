@@ -1,6 +1,7 @@
+import "reflect-metadata"
 import { DataSource } from "typeorm";
 
-export const myDataSource = new DataSource({
+export const dbSource = new DataSource({
     type: "mongodb",
     host: process.env.DATABASE_HOST,
     port: 27017,
