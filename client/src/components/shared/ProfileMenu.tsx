@@ -6,9 +6,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Link } from "react-router-dom";
 
 const ProfileMenu = () => {
-  const loggedIn = true;
+  const loggedIn = false;
 
   return (
     <div>
@@ -17,16 +18,25 @@ const ProfileMenu = () => {
           <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
             <img
               className="h-8 w-8 rounded-full"
-              src="https://placehold.it/64x64"
+              src={
+                loggedIn
+                  ? "https://placekitten.com/200/200"
+                  : "https://avatars.githubusercontent.com/u/29652829?v=4"
+              }
               alt="avatar"
             />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {!loggedIn ? (
-            <DropdownMenuItem>
-              <a>Login</a>
-            </DropdownMenuItem>
+            <>
+              <Link to="/login">
+                <DropdownMenuItem>Login</DropdownMenuItem>
+              </Link>
+              <Link to="/signup">
+                <DropdownMenuItem>Signup</DropdownMenuItem>
+              </Link>
+            </>
           ) : (
             <>
               <DropdownMenuLabel>{"{username}"}</DropdownMenuLabel>
