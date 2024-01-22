@@ -1,11 +1,9 @@
 import {
   BrowserRouter,
-  Navigate,
-  Outlet,
   Route,
   Routes,
 } from "react-router-dom";
-import { ThemeProvider } from "./components/shared/theme-provider";
+import { ThemeProvider } from "./context/theme-provider";
 import Home from "./pages/Home";
 import Layout from "./components/Layout";
 import { Login } from "./pages/Profile/Login";

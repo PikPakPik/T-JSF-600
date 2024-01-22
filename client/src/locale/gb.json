@@ -1,0 +1,41 @@
+{
+    "translation": {
+        "theme": {
+            "light": "Light",
+            "dark": "Dark",
+            "system": "System"
+        },
+        "profile_dropdown": {
+            "not_connected": {
+                "signin": "Sign in",
+                "signup": "Sign up"
+            },
+            "connected": {
+                "profile": "Profile",
+                "settings": "Settings",
+                "logout": "Logout"
+            }
+        },
+        "home": {
+            "h1_title": "Welcome to IRC Chat",
+            "p_description": "A simple chat app built with React, Vite, TailwindCSS and Socket.IO",
+            "signin": "Sign in",
+            "signup": "Sign up"
+        },
+        "signin": {
+            "h1_title": "Sign in",
+            "email_username": "Email or username",
+            "password": "Password",
+            "signup": "Sign up",
+            "no_account": "Don't have an account?"
+        },
+        "signup": {
+            "h1_title": "Sign up",
+            "email": "Email",
+            "username": "Username",
+            "password": "Password",
+            "signin": "Sign in",
+            "already_account": "Already have an account?"
+        }
+    }
+}
