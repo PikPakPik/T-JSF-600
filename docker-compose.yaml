@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  server:
+    build:
+      context: ./server/
+      dockerfile: Dockerfile
+    command: npm run start
+    volumes:
+      - ./server:/usr/src/app
+    ports:
+      - 3000:3000
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - db_data:/data/db
+
+  client:
+    build:
+      context: ./client/
+      dockerfile: Dockerfile
+    command: npm run start
+    volumes:
+      - ./client:/usr/src/app
+    ports:
+      - 3001:3000
+
+volumes:
+  db_data: {}
