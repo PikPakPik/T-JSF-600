@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import ProfileMenu from "./ProfileMenu";
-import { ModeToggle } from "./mode-toggle";
+import { ModeToggle } from "./ThemeSwitcher";
+import LangSwitcher from "./LangSwitcher";
 
 export function Header() {
   return (
@@ -25,9 +26,8 @@ export function Header() {
         </div>
         <div className="flex items-center gap-5">
           <ModeToggle />
-          <div className="relative">
-            <ProfileMenu />
-          </div>
+          <LangSwitcher />
+          <ProfileMenu />
         </div>
       </div>
     </>
