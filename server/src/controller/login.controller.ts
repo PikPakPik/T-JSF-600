@@ -22,7 +22,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     if (!user) {
         return res.status(403).json({
-            success: false,
             error: 'Forbidden',
             code: 403,
             message: 'Invalid username or password',
@@ -32,7 +31,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const passwordMatch = await bcrypt.compare(result.password, user.password);
     if (!passwordMatch) {
         return res.status(403).json({
-            success: false,
             error: 'Forbidden',
             code: 403,
             message: 'Invalid username or password',

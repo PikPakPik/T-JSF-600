@@ -1,5 +1,13 @@
 import { model, Schema } from 'mongoose';
-import { UserDto } from '../dto/User.dto';
+
+interface UserDto {
+  username: string,
+  email: string,
+  password: string,
+  createdAt: string,
+  updatedAt: string | null,
+  lastLogin: string | null,
+}
 
 const schema = new Schema<UserDto>({
   username: { type: String, required: true, index: { unique: true } },
