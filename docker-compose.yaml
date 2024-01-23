@@ -5,7 +5,7 @@ services:
     build:
       context: ./server/
       dockerfile: Dockerfile
-    command: "npm run dev"
+    command: "npm run start"
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
@@ -25,7 +25,7 @@ services:
     build:
       context: ./client/
       dockerfile: Dockerfile
-    command: npm run start
+    command: npm run dev
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/hooks/useAuth";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,7 +18,24 @@ import { Link } from "react-router-dom";
 export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const { t } = useTranslation();
+  const { login: authLogin } = useAuth();
 
+  const handleLogin = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const username = document.getElementById("login") as HTMLInputElement;
+    const password = document.getElementById("password") as HTMLInputElement;
+
+    authLogin(
+      {
+        username: username.value,
+        password: password.value,
+      },
+      () => {
+        console.error("Error");
+      }
+    );
+  };
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <Card className="max-w-sm">
@@ -61,7 +79,9 @@ export function Login() {
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full">{t("signin.h1_title")}</Button>
+          <Button className="w-full" onClick={handleLogin}>
+            {t("signin.h1_title")}
+          </Button>
         </CardFooter>
       </Card>
     </div>

@@ -6,12 +6,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 const ProfileMenu = () => {
   const { t } = useTranslation();
-  const loggedIn = false;
+  const { user, logout: logoutUser } = useAuth();
 
   return (
     <DropdownMenu>
@@ -20,7 +21,7 @@ const ProfileMenu = () => {
           <img
             className="w-8 h-8 rounded-full"
             src={
-              loggedIn
+              user
                 ? "https://placekitten.com/200/200"
                 : "https://avatars.githubusercontent.com/u/29652829?v=4"
             }
@@ -29,7 +30,7 @@ const ProfileMenu = () => {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {!loggedIn ? (
+        {!user ? (
           <>
             <Link to="/login">
               <DropdownMenuItem>
@@ -44,7 +45,7 @@ const ProfileMenu = () => {
           </>
         ) : (
           <>
-            <DropdownMenuLabel>{"{username}"}</DropdownMenuLabel>
+            <DropdownMenuLabel>{user.username}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               {t("profile_dropdown.connected.profile")}
@@ -52,7 +53,7 @@ const ProfileMenu = () => {
             <DropdownMenuItem>
               {t("profile_dropdown.connected.settings")}
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={logoutUser}>
               {t("profile_dropdown.connected.logout")}
             </DropdownMenuItem>
           </>
