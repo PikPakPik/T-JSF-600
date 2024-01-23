@@ -3,7 +3,7 @@ import * as loginController from './controller/login.controller';
 import * as registerController from './controller/register.controller';
 import * as userController from './controller/user.controller';
 import mongoose from 'mongoose';
-import {isLogged} from "./middleware/isLogged.middleware";
+import {isLogged} from "./middleware/express/isLogged.middleware";
 const router = express.Router();
 
 mongoose.connect(`mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`)
