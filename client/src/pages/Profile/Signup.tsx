@@ -11,8 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -50,13 +50,13 @@ export function Signup() {
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                  <EyeIcon className="h-4 w-4" aria-hidden="true" />
+                  <EyeIcon className="w-4 h-4" aria-hidden="true" />
                 ) : (
-                  <EyeOffIcon className="h-4 w-4" aria-hidden="true" />
+                  <EyeOffIcon className="w-4 h-4" aria-hidden="true" />
                 )}
                 <span className="sr-only">{"Show password"}</span>
               </Button>
