@@ -4,11 +4,12 @@ import { LoginDTO } from "../dto/login.dto";
 import User from "../entity/User.entity";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import {ValidationErrorException} from "../exception/ValidationError.exception";
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     const result = await validationPipe(LoginDTO, { ...req.body })
-    if (result === null || result === undefined) {
-        return res.status(400).json({ result });
+    if (result instanceof ValidationErrorException) {
+        return res.status(400).json({ success: false, message: result.message, errors: result.getErrors() });
     }
 
     const query = User.where({
@@ -21,6 +22,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     if (!user) {
         return res.status(403).json({
+            success: false,
             error: 'Forbidden',
             code: 403,
             message: 'Invalid username or password',
@@ -30,6 +32,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const passwordMatch = await bcrypt.compare(result.password, user.password);
     if (!passwordMatch) {
         return res.status(403).json({
+            success: false,
             error: 'Forbidden',
             code: 403,
             message: 'Invalid username or password',
@@ -44,5 +47,5 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         { expiresIn: '1h' }
     );
 
-    res.status(200).json({ token: token })
+    res.status(200).json({ success: true, token: token })
 };
