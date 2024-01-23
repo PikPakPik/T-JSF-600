@@ -7,5 +7,5 @@ export const validationPipe = async (schema: new () => {}, requestObject: object
   if (errors.length > 0) {
     return errors;
   }
-  return true;
+  return transformedClass;
 };

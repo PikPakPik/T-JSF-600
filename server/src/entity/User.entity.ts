@@ -1,58 +1,15 @@
-import {
-    Entity,
-    Unique,
-    ObjectIdColumn,
-    BeforeInsert,
-    BeforeUpdate,
-    Column,
-  } from 'typeorm';
-  import { v4 as uuid } from 'uuid';
-  import * as bcrypt from 'bcrypt';
-  
-  @Entity('users')
-  @Unique(['username', 'email'])
-  export class User {
-    @ObjectIdColumn()
-    id?: string;
-  
-    //@BeforeInsert()
-    //createUUID() {
-    //  this.id = uuid();
-    //}
-  
-    @Column()
-    username?: string;
-  
-    @Column()
-    email?: string;
-  
-    @Column()
-    password: string = "";
-  
-    @BeforeInsert()
-    async hashPassword() {
-      this.password = await bcrypt.hash(this.password, 10);
-    }
+import { model, Schema } from 'mongoose';
+import { UserDto } from '../dto/User.dto';
 
-  
-    @Column({ type: 'datetime', name: 'created_at' })
-    createdAt?: Date;
-  
-    @BeforeInsert()
-    insertCreatedAt() {
-      this.createdAt = new Date();
-    }
-  
-    @Column({
-      type: 'datetime',
-      name: 'updated_at',
-      nullable: true,
-      default: null,
-    })
-    updatedAt?: Date;
-  
-    @BeforeUpdate()
-    updateTimestamp() {
-      this.updatedAt = new Date();
-    }
-  }
+const schema = new Schema<UserDto>({
+  username: { type: String, required: true, index: { unique: true } },
+  email: { type: String, required: true, index: { unique: true } },
+  password: { type: String, required: true },
+  createdAt: { type: String, default: new Date().toISOString() },
+  updatedAt: { type: String, default: null },
+  lastLogin: { type: String, default: null }
+});
+
+const User = model<UserDto>('User', schema, 'users')
+
+export default User;
