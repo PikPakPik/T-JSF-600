@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import * as loginController from './controller/login.controller';
+import * as registerController from './controller/register.controller';
 import mongoose from 'mongoose';
 const router = express.Router();
 
@@ -19,5 +20,6 @@ router.get('/', (req: any, res: any) => {
 });
 
 router.post('/login', (req: Request, res: Response, next: NextFunction) => loginController.login(req, res, next));
+router.post('/register', (req: Request, res: Response, next: NextFunction) => registerController.register(req, res, next));
 
 export default router;
