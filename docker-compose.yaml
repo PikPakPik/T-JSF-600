@@ -30,7 +30,7 @@ services:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - 3001:3000
+      - 5173:5173
 
   mongo-gui:
     image: ugleiton/mongo-gui
