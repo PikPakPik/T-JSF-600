@@ -37,9 +37,13 @@ docker compose up --build -d
 -> http://localhost:5173
 ```
 
-# Screenshots
+## Membres du Projet
+| Nom | Rôle |
+|----------|:-------------:|
+| Valentin Rgt | Backend | 
+| Alexandre Tressel | Frontend | 
+
+## Screenshots
 _soon_
 
-# Auteurs
-Valentin Rgt
-Alexandre Tressel
+
