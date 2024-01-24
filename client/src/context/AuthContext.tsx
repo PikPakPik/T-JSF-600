@@ -1,3 +1,4 @@
+import LoadingPage from "@/components/shared/LoadingPage";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -36,6 +37,7 @@ const AuthContext = createContext<AuthContextProps>(defaultProvider);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(defaultProvider.user);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,7 +57,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           } else {
             console.error(`Server responded with status: ${response.status}`);
             if (response.status === 401) {
-              // Only remove the token if the status is 401
               window.localStorage.removeItem(TOKEN_KEY);
               window.location.href = "/login";
             }
@@ -64,6 +65,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           console.error(err);
         }
       }
+      // Une fois l'authentification vérifiée, mettez à jour l'état de chargement
+      setLoading(false);
     };
 
     initAuth();
@@ -172,7 +175,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     signup: handleSignup,
   };
 
-  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={values}>
+      {loading ? <LoadingPage /> : children}
+    </AuthContext.Provider>
+  );
 };
 
 export { AuthContext, AuthProvider };
