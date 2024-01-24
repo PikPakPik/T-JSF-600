@@ -24,20 +24,21 @@ those whose name contains the string.
 Stack MERN ( MongoDB, Express, React, NodeJS)
 
 ### Ports utilisés
-**MongoDB** :  
-**Backend** :  
-**MongoDB**-UI :  
-**Frontend** :  
+- **MongoDB** : 27017  
+- **Backend** : 3000  
+- **MongoDB**-UI : 4321  
+- **Frontend** : 3001  
 
 ## Get started
 ```
-git clone ............
+git clone git@github.com:EpitechMscProPromo2026/T-JSF-600-NAN_1.git
 cd T-JSF-600-NAN_1
 docker compose up --build -d
 -> http://localhost:5173
 ```
 
-##
+# Screenshots
+_soon_
 
 # Auteurs
 Valentin Rgt
