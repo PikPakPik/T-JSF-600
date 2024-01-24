@@ -4,7 +4,8 @@ import Layout from "./components/Layout";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/theme-provider";
 import { useAuth } from "./hooks/useAuth";
-import { Chat } from "./pages/Chat/Chat";
+import { Chat } from "./components/ChatLayout";
+import { HomeChat } from "./pages/Chat/HomeChat";
 import Home from "./pages/Home";
 import { Login } from "./pages/Profile/Login";
 import { Signup } from "./pages/Profile/Signup";
@@ -67,8 +68,24 @@ const App = () => {
                     />
                   }
                 />
-                <Route path="/chat">
-                  <Route index element={<Chat />} />
+                <Route
+                  path="/chat"
+                  element={
+                    <PrivateRoute
+                      element={<Chat />}
+                      fallback={<Navigate to="/" />}
+                    />
+                  }
+                >
+                  <Route
+                    index
+                    element={
+                      <PrivateRoute
+                        element={<HomeChat />}
+                        fallback={<Navigate to="/" />}
+                      />
+                    }
+                  />
                 </Route>
                 <Route path="*" element={<Navigate to="/" />} />
               </Route>

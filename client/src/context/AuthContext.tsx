@@ -9,6 +9,7 @@ interface User {
   _id: number;
   username: string;
   email: string;
+  token: string;
 }
 
 interface AuthProviderProps {
@@ -39,11 +40,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      // Utilisation de la constante pour le TOKEN_KEY et la méthode getItem pour récupérer le token
       const storedToken = window.localStorage.getItem(TOKEN_KEY);
       if (storedToken) {
         try {
-          // Utilisation de la constante pour API_URL et la méthode fetch pour récupérer les données
           const response = await fetch(`${API_URL}/user`, {
             headers: {
               Authorization: `Bearer ${storedToken}`,
@@ -55,10 +54,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setUser(data.data);
           } else {
             console.error(`Server responded with status: ${response.status}`);
+            if (response.status === 401) {
+              // Only remove the token if the status is 401
+              window.localStorage.removeItem(TOKEN_KEY);
+              window.location.href = "/login";
+            }
           }
         } catch (err) {
-          window.localStorage.removeItem(TOKEN_KEY);
-          window.location.href = "/login";
           console.error(err);
         }
       }

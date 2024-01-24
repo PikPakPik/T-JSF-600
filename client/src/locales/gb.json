@@ -36,6 +36,11 @@
       "password": "Password",
       "signin": "Sign in",
       "already_account": "Already have an account?"
+    },
+    "chat": {
+      "channels": "Channels",
+      "home": "Home",
+      "users": "Users"
     }
   }
 }
