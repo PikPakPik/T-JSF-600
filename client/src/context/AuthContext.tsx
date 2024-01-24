@@ -57,13 +57,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setUser(data.data);
           } else {
             console.error(`Server responded with status: ${response.status}`);
-<<<<<<< Updated upstream
-=======
             if (response.status === 401) {
               window.localStorage.removeItem(TOKEN_KEY);
               window.location.href = "/login";
             }
->>>>>>> Stashed changes
           }
         } catch (err) {
           window.localStorage.removeItem(TOKEN_KEY);
