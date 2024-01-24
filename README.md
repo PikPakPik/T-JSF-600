@@ -1,8 +1,14 @@
-# IRC Project
+# IRC Chat
 
-## Contexte
-Le but de ce projet est de réaliser une application de chat en temps réel avec un système de Cannaux, Message persistant en utilisant Socket.IO.  
-Avec pour le côté client la possibilité d'éffectuer plusieurs commandes :  
+IRC Chat est une application de messagerie en temps réel avec la possiblité de créer des cannaux et d'envoyer des messages privées
+
+## Features
+- Création/Supréssion/Modification de cannaux
+- Rejoindre des cannaux
+- Affichage d'un message lorsque un utilisateur rejoint le cannal
+- Modification de son propre nom
+
+## Commandes 
 - **/nick** _nickname_: define the nickname of the user on the server.  
 - **/list** _[string]_: list the available channels from the server. If string is specified, only displays  
 those whose name contains the string.  
@@ -23,13 +29,15 @@ Stack MERN ( MongoDB, Express, React, NodeJS)
 **MongoDB**-UI :  
 **Frontend** :  
 
-## Installation
+## Get started
 ```
 git clone ............
 cd T-JSF-600-NAN_1
 docker compose up --build -d
 -> http://localhost:5173
 ```
+
+##
 
 # Auteurs
 Valentin Rgt
