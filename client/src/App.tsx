@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Chat } from "./components/ChatLayout";
 import Layout from "./components/Layout";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/theme-provider";
 import { useAuth } from "./hooks/useAuth";
-import { Chat } from "./components/ChatLayout";
 import { HomeChat } from "./pages/Chat/HomeChat";
 import Home from "./pages/Home";
 import { Login } from "./pages/Profile/Login";

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { io } from "socket.io-client";
 import { DiscussionChat } from "./chat/DiscussionChat";
-import { SideBarChat } from "./chat/SideBarChat";
+import SideBarChat from "./chat/SideBarChat";
 
 export const Chat = () => {
   const socket = io("http://localhost:3000", {
@@ -18,10 +18,14 @@ export const Chat = () => {
     };
   }, [socket]);
   return (
-    <div className="flex w-screen h-full overflow-hidden">
+    <div className="flex flex-row h-full overflow-hidden">
       <SideBarChat />
-      <Outlet />
-      <DiscussionChat socket={socket} />
+      <div className="w-full mx-6 my-6">
+        <Outlet />
+        <div className="flex flex-col h-full">
+          <DiscussionChat socket={socket} />
+        </div>
+      </div>
     </div>
   );
 };
