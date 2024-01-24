@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
-import User from "../entity/User.entity";
+import User from "../../entity/User.entity";
 
 export function isLogged(req: Request, res: Response, next: NextFunction) {
     const bearerHeader = req.header('Authorization');
