@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-interface UserDto {
+interface UserDTO {
   username: string,
   email: string,
   password: string,
@@ -9,7 +9,7 @@ interface UserDto {
   lastLogin: string | null,
 }
 
-const schema = new Schema<UserDto>({
+const schema = new Schema<UserDTO>({
   username: { type: String, required: true, index: { unique: true } },
   email: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
@@ -18,6 +18,6 @@ const schema = new Schema<UserDto>({
   lastLogin: { type: String, default: null }
 });
 
-const User = model<UserDto>('User', schema, 'users')
+const User = model<UserDTO>('User', schema, 'users')
 
 export default User;
