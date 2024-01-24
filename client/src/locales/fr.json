@@ -36,6 +36,11 @@
       "password": "Mot de passe",
       "signin": "Se connecter",
       "already_account": "Vous avez déjà un compte?"
+    },
+    "chat": {
+      "channels": "Canaux",
+      "home": "Accueil",
+      "users": "Utilisateurs"
     }
   }
 }
