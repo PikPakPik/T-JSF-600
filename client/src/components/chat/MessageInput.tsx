@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SetStateAction, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const MessageInput = ({
   onSendMessage,
@@ -11,6 +12,7 @@ export const MessageInput = ({
   show: boolean;
 }) => {
   const [message, setMessage] = useState("");
+  const { t } = useTranslation();
 
   const handleInputChange = (event: {
     target: { value: SetStateAction<string> };
@@ -26,13 +28,13 @@ export const MessageInput = ({
   return (
     <div className={`${show ? "block" : "hidden"} flex`}>
       <Input
-        placeholder="Type your message here..."
+        placeholder={t("chat.message.placeholder")}
         value={message}
         onChange={handleInputChange}
         className="flex-1 mr-2 "
       />
       <Button onClick={handleButtonClick} className="w-76">
-        Send
+        {t("chat.message.send")}
       </Button>
     </div>
   );

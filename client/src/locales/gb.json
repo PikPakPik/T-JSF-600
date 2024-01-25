@@ -38,9 +38,13 @@
       "already_account": "Already have an account?"
     },
     "chat": {
-      "channels": "Channels",
+      "rooms": "Channels",
       "home": "Home",
-      "users": "Users"
+      "users": "Users",
+      "message": {
+        "placeholder": "Type your message here...",
+        "send": "Send"
+      }
     }
   }
 }

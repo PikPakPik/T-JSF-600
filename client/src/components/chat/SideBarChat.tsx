@@ -1,11 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { SVGProps, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
 
 export default function SideBarChat() {
   const [roomsDefault, setRoomsDefault] = useState<string[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function fetchData() {
@@ -43,12 +45,12 @@ export default function SideBarChat() {
           <Link to="/chat">
             <Button className="w-full mb-4" variant={"outline"}>
               <span className="text-sm font-medium text-gray-900 dark:text-white">
-                Accueil
+                {t("chat.home")}
               </span>
             </Button>
           </Link>
           <h3 className="mb-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
-            Channels
+            {t("chat.rooms")}
           </h3>
           <ul className="space-y-2">
             {roomsDefault.map((room: any) => (
@@ -71,7 +73,7 @@ export default function SideBarChat() {
         </div>
         <div className="p-4">
           <h3 className="mb-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
-            Users
+            {t("chat.users")}
           </h3>
           <ul className="space-y-2">
             <li className="flex items-center space-x-2">
