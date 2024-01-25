@@ -2,6 +2,7 @@ import LoadingPage from "@/components/shared/LoadingPage";
 import { User } from "@/types/User";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // Constantes pour les URLs et les clés
 const API_URL = "http://localhost:3000/api";
@@ -101,11 +102,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           .then((res) => res.json())
           .then((data) => {
             setUser(data.data);
-            navigate("/");
+            navigate("/chat");
+            toast.success("Connexion réussie!", {
+              theme: "colored",
+              autoClose: 2000,
+            });
           });
       })
       .catch((err) => {
         if (errorCallback) errorCallback(err);
+        toast.error("Identifiant ou mot de passe incorrect", {
+          theme: "colored",
+          autoClose: 2000,
+        });
       });
   };
 
@@ -144,11 +153,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           .then((res) => res.json())
           .then((data) => {
             setUser(data.data);
-            navigate("/");
+            navigate("/chat");
+            toast.success("Inscription réussie!", {
+              theme: "colored",
+              autoClose: 2000,
+            });
           });
       })
       .catch((err) => {
         if (errorCallback) errorCallback(err);
+        toast.error("Veuillez remplir tous les champs correctement", {
+          theme: "colored",
+          autoClose: 2000,
+        });
       });
   };
 
