@@ -31,7 +31,7 @@ export const MessageInput = ({
         placeholder={t("chat.message.placeholder")}
         value={message}
         onChange={handleInputChange}
-        className="flex-1 mr-2 "
+        className="flex-1 mr-2 dark:text-white"
       />
       <Button onClick={handleButtonClick} className="w-76">
         {t("chat.message.send")}
