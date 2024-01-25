@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import * as loginController from './controller/login.controller';
 import * as registerController from './controller/register.controller';
 import * as userController from './controller/user.controller';
+import * as roomController from './controller/room.controller';
 import mongoose from 'mongoose';
 import {isLogged} from "./middleware/express/isLogged.middleware";
 const router = express.Router();
@@ -23,8 +24,12 @@ router.get('/', (req: any, res: any) => {
 
 router.post('/login', (req: Request, res: Response, next: NextFunction) => loginController.login(req, res, next));
 router.post('/register', (req: Request, res: Response, next: NextFunction) => registerController.register(req, res, next));
+
 router.get('/user', isLogged, (req: Request, res: Response, next: NextFunction) => userController.me(req, res, next));
 router.patch('/user', isLogged, (req: Request, res: Response, next: NextFunction) => userController.updateData(req, res, next));
 router.put('/user/password', isLogged, (req: Request, res: Response, next: NextFunction) => userController.updatePassword(req, res, next));
+
+router.get('/rooms', isLogged, (req: Request, res: Response, next: NextFunction) => roomController.get(req, res, next));
+router.get('/rooms/:roomId/messages', isLogged, (req: Request, res: Response, next: NextFunction) => roomController.getMessages(req, res, next));
 
 export default router;
