@@ -31,7 +31,6 @@ const App = () => {
     fallback: React.ReactNode;
   }) => {
     const { user } = useAuth();
-    console.log("user", user);
     return !user ? element : fallback;
   };
 

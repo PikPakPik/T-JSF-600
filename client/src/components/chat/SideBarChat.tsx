@@ -23,8 +23,6 @@ export default function SideBarChat() {
 
       setRoomsDefault(data.rooms.filter((room: Room) => room.isDefault));
       setRooms(data.rooms.filter((room: Room) => !room.isDefault));
-
-      console.log(data);
     }
 
     fetchData();

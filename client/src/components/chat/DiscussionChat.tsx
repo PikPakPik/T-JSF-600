@@ -20,7 +20,6 @@ export const DiscussionChat = () => {
     );
     const data = await response.json();
     setMessages(data.messages);
-    console.log(data);
   }, [roomId]);
 
   useEffect(() => {
