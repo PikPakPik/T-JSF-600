@@ -1,9 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { MessageInput } from "./MessageInput";
 
-export const DiscussionChat = ({ socket }: { socket: any }) => {
+export const DiscussionChat = () => {
   const [messages, setMessages] = useState<string[]>([]);
+  const { roomId } = useParams();
 
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        `http://localhost:3000/api/rooms/${roomId}/messages`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      const data = await response.json();
+      setMessages(data.messages);
+      console.log(data);
+    }
+    fetchData();
+  }, [roomId]);
   const handleSendMessage = (message: string) => {
     setMessages([...messages, message]);
   };

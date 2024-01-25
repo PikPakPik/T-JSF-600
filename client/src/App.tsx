@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Chat } from "./components/ChatLayout";
 import Layout from "./components/Layout";
+import { DiscussionChat } from "./components/chat/DiscussionChat";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/theme-provider";
 import { useAuth } from "./hooks/useAuth";
@@ -77,15 +78,8 @@ const App = () => {
                     />
                   }
                 >
-                  <Route
-                    index
-                    element={
-                      <PrivateRoute
-                        element={<HomeChat />}
-                        fallback={<Navigate to="/" />}
-                      />
-                    }
-                  />
+                  <Route index element={<HomeChat />} />
+                  <Route path=":roomId" element={<DiscussionChat />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/" />} />
               </Route>
