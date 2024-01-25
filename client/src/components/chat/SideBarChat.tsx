@@ -1,9 +1,26 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { SVGProps } from "react";
+import { SVGProps, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
 
 export default function SideBarChat() {
+  const [roomsDefault, setRoomsDefault] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("http://localhost:3000/api/rooms", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      const data = await response.json();
+      setRoomsDefault(data.rooms);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div
       key="1"
@@ -23,16 +40,27 @@ export default function SideBarChat() {
       </div>
       <div className="flex-1 overflow-y-auto">
         <div className="p-4">
+          <Link to="/chat">
+            <Button className="w-full mb-4" variant={"outline"}>
+              <span className="text-sm font-medium text-gray-900 dark:text-white">
+                Accueil
+              </span>
+            </Button>
+          </Link>
           <h3 className="mb-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
             Channels
           </h3>
           <ul className="space-y-2">
-            <li className="flex items-center space-x-2">
-              <span className="block w-2 h-2 bg-green-500 rounded-full"></span>
-              <span className="text-sm font-medium text-gray-900 dark:text-white">
-                General
-              </span>
-            </li>
+            {roomsDefault.map((room: any) => (
+              <Link to={`/chat/${room._id}`} key={room._id}>
+                <li className="flex items-center space-x-2">
+                  <span className="block w-2 h-2 bg-green-500 rounded-full"></span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    {room.name}
+                  </span>
+                </li>
+              </Link>
+            ))}
             <li className="flex items-center space-x-2">
               <span className="block w-2 h-2 bg-gray-500 rounded-full"></span>
               <span className="text-sm font-medium text-gray-900 dark:text-white">
