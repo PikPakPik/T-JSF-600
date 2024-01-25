@@ -34,7 +34,7 @@ export const getMessages = async (req: Request, res: Response, next: NextFunctio
             $gte: startDate.toISOString(),
             $lte: endDate.toISOString()
         }
-    }).sort({ createdAt: -1 }).select(['-room']).populate('user', ['username']);
+    }).sort({ createdAt: 1 }).select(['-room']).populate('user', ['username']);
 
     const messages = await query1.exec();
 
