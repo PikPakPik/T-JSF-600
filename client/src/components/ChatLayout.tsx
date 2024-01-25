@@ -1,3 +1,4 @@
+import { SocketContext } from "@/context/SocketContext";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -11,17 +12,19 @@ export const Chat = () => {
   });
 
   useEffect(() => {
-    socket.emit("message", "Hello world");
     return () => {
       socket.disconnect();
     };
   }, [socket]);
+
   return (
-    <div className="flex flex-row h-full overflow-hidden">
-      <SideBarChat />
-      <div className="flex flex-col w-full h-full mx-6 ">
-        <Outlet />
+    <SocketContext.Provider value={socket}>
+      <div className="flex flex-row h-full overflow-hidden">
+        <SideBarChat />
+        <div className="flex flex-col w-full h-full mx-6 ">
+          <Outlet />
+        </div>
       </div>
-    </div>
+    </SocketContext.Provider>
   );
 };
