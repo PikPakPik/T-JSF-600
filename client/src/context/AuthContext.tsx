@@ -1,17 +1,11 @@
 import LoadingPage from "@/components/shared/LoadingPage";
+import { User } from "@/types/User";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Constantes pour les URLs et les clés
 const API_URL = "http://localhost:3000/api";
 const TOKEN_KEY = "token";
-
-interface User {
-  _id: number;
-  username: string;
-  email: string;
-  token: string;
-}
 
 interface AuthProviderProps {
   children: React.ReactNode;

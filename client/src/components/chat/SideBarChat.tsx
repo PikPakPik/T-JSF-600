@@ -1,13 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Room } from "@/types/Room";
 import { SVGProps, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
 
 export default function SideBarChat() {
-  const [roomsDefault, setRoomsDefault] = useState<string[]>([]);
-  const [rooms, setRooms] = useState<string[]>([]);
+  const [roomsDefault, setRoomsDefault] = useState<Room[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -20,8 +21,10 @@ export default function SideBarChat() {
       });
       const data = await response.json();
 
-      setRoomsDefault(data.rooms.filter((room: any) => room.isDefault));
-      setRooms(data.rooms.filter((room: any) => !room.isDefault));
+      setRoomsDefault(data.rooms.filter((room: Room) => room.isDefault));
+      setRooms(data.rooms.filter((room: Room) => !room.isDefault));
+
+      console.log(data);
     }
 
     fetchData();
@@ -57,7 +60,7 @@ export default function SideBarChat() {
             {t("chat.rooms")}
           </h3>
           <ul className="flex flex-col space-y-2">
-            {roomsDefault.map((room: any) => (
+            {roomsDefault.map((room: Room) => (
               <Link to={`/chat/${room._id}`} key={room._id}>
                 <li className="flex items-center space-x-2">
                   <span className="block w-2 h-2 bg-green-500 rounded-full"></span>
@@ -67,7 +70,7 @@ export default function SideBarChat() {
                 </li>
               </Link>
             ))}
-            {rooms.map((room: any) => (
+            {rooms.map((room: Room) => (
               <Link to={`/chat/${room._id}`} key={room._id}>
                 <li className="flex items-center space-x-2">
                   <span className="block w-2 h-2 bg-gray-500 rounded-full"></span>

@@ -6,16 +6,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
+import { Message } from "@/types/Message";
 import { ISOToDateTime } from "@/utils/ISOToDateTime";
 import { ISOToRelativeTime } from "@/utils/ISOToRelativeTime";
 
 export type MessageChatProps = {
-  message: any;
+  message: Message;
 };
 
 export const MessageChat = (props: MessageChatProps) => {
   const { user } = useAuth();
-  const isSender = props.message.user._id === user?._id;
+  const isSender = props.message.user._id === String(user?._id);
   return (
     <div className="flex flex-col gap-4">
       {isSender ? (
