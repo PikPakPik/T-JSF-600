@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { MessageChat } from "./MessageChat";
 import { MessageInput } from "./MessageInput";
 
 export const DiscussionChat = () => {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<
+    { _id: string; user: any; message: string; createdAt: string }[]
+  >([]);
   const { roomId } = useParams();
 
   useEffect(() => {
@@ -23,15 +26,14 @@ export const DiscussionChat = () => {
     }
     fetchData();
   }, [roomId]);
-  const handleSendMessage = (message: string) => {
-    setMessages([...messages, message]);
-  };
+
+  const handleSendMessage = (message: string) => {};
 
   return (
     <div className="flex flex-col h-full p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
       <div className="flex flex-col flex-1 mb-4 overflow-y-auto">
-        {messages.map((message, index) => (
-          <p key={index}>{message}</p>
+        {messages.map((message) => (
+          <MessageChat key={message._id} message={message} />
         ))}
       </div>
       <div className="mt-auto">
