@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Chat } from "./components/ChatLayout";
 import Layout from "./components/Layout";
 import { DiscussionChat } from "./components/chat/DiscussionChat";
@@ -83,6 +85,7 @@ const App = () => {
                 <Route path="*" element={<Navigate to="/" />} />
               </Route>
             </Routes>
+            <ToastContainer />
           </AuthProvider>
         </BrowserRouter>
       </ThemeProvider>
