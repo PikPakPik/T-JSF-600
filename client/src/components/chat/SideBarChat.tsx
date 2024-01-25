@@ -7,6 +7,7 @@ import { JSX } from "react/jsx-runtime";
 
 export default function SideBarChat() {
   const [roomsDefault, setRoomsDefault] = useState<string[]>([]);
+  const [rooms, setRooms] = useState<string[]>([]);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -18,8 +19,11 @@ export default function SideBarChat() {
         },
       });
       const data = await response.json();
-      setRoomsDefault(data.rooms);
+
+      setRoomsDefault(data.rooms.filter((room: any) => room.isDefault));
+      setRooms(data.rooms.filter((room: any) => !room.isDefault));
     }
+
     fetchData();
   }, []);
 
@@ -52,7 +56,7 @@ export default function SideBarChat() {
           <h3 className="mb-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
             {t("chat.rooms")}
           </h3>
-          <ul className="space-y-2">
+          <ul className="flex flex-col space-y-2">
             {roomsDefault.map((room: any) => (
               <Link to={`/chat/${room._id}`} key={room._id}>
                 <li className="flex items-center space-x-2">
@@ -63,12 +67,16 @@ export default function SideBarChat() {
                 </li>
               </Link>
             ))}
-            <li className="flex items-center space-x-2">
-              <span className="block w-2 h-2 bg-gray-500 rounded-full"></span>
-              <span className="text-sm font-medium text-gray-900 dark:text-white">
-                Random
-              </span>
-            </li>
+            {rooms.map((room: any) => (
+              <Link to={`/chat/${room._id}`} key={room._id}>
+                <li className="flex items-center space-x-2">
+                  <span className="block w-2 h-2 bg-gray-500 rounded-full"></span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    {room.name}
+                  </span>
+                </li>
+              </Link>
+            ))}
           </ul>
         </div>
         <div className="p-4">
