@@ -27,13 +27,10 @@ io.on("connection", async (socket: Socket) => {
     const user: any = socket.handshake.query.user;
     console.log("Socket connected: " + socket.id);
     await User.findOneAndUpdate({ _id: user._id }, { socketId: socket.id });
-    socket.broadcast.emit("user_login", user);
-
-    const room = await Room.findOne({ isDefault: true });
-    if (room) {
-        socket.join(room._id);
-        socket.broadcast.to(room._id).emit("notification", "Welcome to the chat " + user.username + "!");
-    }
+    socket.broadcast.emit("notification", {
+        event: "user_login",
+        user: user
+    });
 
     socket.on("message", (arg: any) => { messageEvent.message(io, socket, arg) });
 
