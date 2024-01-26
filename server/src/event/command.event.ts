@@ -194,5 +194,37 @@ export const quitRoom = async (io: Server, socket: Socket, arg: any) => {
 
 export const users = async (io: Server, socket: Socket, arg: any) => {
     const users = await User.find({ socketId: { $ne: null } }).select(["-password", "-email"]);
-    console.log("command:users", users);
+    return socket.emit("command:users", { success: true, users: users })
+}
+
+export const privateMessage = async (io: Server, socket: Socket, arg: any) => {
+    const user: any = socket.handshake.query.user;
+    if (!(arg instanceof Object)) {
+        return socket.emit("command:msg", { success: false, message: "ws.argument.invalid" })
+    }
+    if (!arg.hasOwnProperty("user") && !arg.hasOwnProperty("message")) {
+        return socket.emit("command:msg", { success: false, message: "ws.argument.property_not_found" })
+    }
+    if (arg.user === null || arg.user === undefined || arg.user.length === 0 && arg.message === null || arg.message === undefined || arg.message.length === 0) {
+        return socket.emit("command:msg", { success: false, message: "ws.argument.is_empty" })
+    }
+    if (!arg.user.match(/^[a-zA-Z0-9]+$/)) {
+        return socket.emit("command:msg", { success: false, message: "ws.argument.is_not_alphanumeric" })
+    }
+
+    const query = User.where({
+        $or: [
+            { username: arg.user },
+            { nickname: arg.user }
+        ],
+    });
+    const searchUser = await query.findOne();
+
+    if (!searchUser) {
+        return socket.emit("command:msg", { success: false, message: "msg.user.not_found" })
+    }
+
+    // TODO: Send message to user
+
+    return socket.emit("command:msg", { success: true, message: "msg.message.send" })
 }

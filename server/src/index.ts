@@ -48,6 +48,8 @@ io.on("connection", async (socket: Socket) => {
 
     socket.on("command:users", (arg: any) => { commandEvent.users(io, socket, arg) });
 
+    socket.on("command:msg", (arg: any) => { commandEvent.privateMessage(io, socket, arg) });
+
     socket.on("disconnect", () => { disconnectEvent.disconnect(io, socket) });
 });
 
