@@ -21,9 +21,9 @@ export function isLogged(socket: Socket, next: any) {
             return next(new Error('User not found'));
         }
 
-        // if (user.socketId !== null) {
-        //     return next(new Error('User already connected'));
-        // }
+        if (user.socketId !== null) {
+            return next(new Error('User already connected'));
+        }
 
         (socket.handshake.query as any).user = user;
         return next();
