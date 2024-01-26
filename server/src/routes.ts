@@ -5,6 +5,7 @@ import * as userController from './controller/user.controller';
 import * as roomController from './controller/room.controller';
 import mongoose from 'mongoose';
 import {isLogged} from "./middleware/express/isLogged.middleware";
+import {getConnectedUsers} from "./controller/user.controller";
 const router = express.Router();
 
 mongoose.connect(`mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`)
@@ -28,6 +29,7 @@ router.post('/register', (req: Request, res: Response, next: NextFunction) => re
 router.get('/user', isLogged, (req: Request, res: Response, next: NextFunction) => userController.me(req, res, next));
 router.patch('/user', isLogged, (req: Request, res: Response, next: NextFunction) => userController.updateData(req, res, next));
 router.put('/user/password', isLogged, (req: Request, res: Response, next: NextFunction) => userController.updatePassword(req, res, next));
+router.put('/user/connected', isLogged, (req: Request, res: Response, next: NextFunction) => userController.getConnectedUsers(req, res, next));
 
 router.get('/rooms', isLogged, (req: Request, res: Response, next: NextFunction) => roomController.get(req, res, next));
 router.get('/rooms/:roomId/messages', isLogged, (req: Request, res: Response, next: NextFunction) => roomController.getMessages(req, res, next));
