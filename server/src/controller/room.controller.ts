@@ -23,6 +23,7 @@ export const getMessages = async (req: Request, res: Response, next: NextFunctio
 
     const currentDate = new Date();
     const startDate = new Date(currentDate);
+    startDate.setDate(startDate.getDate() - 2);
     startDate.setHours(0, 0, 0, 0);
     
     const endDate = new Date(currentDate);

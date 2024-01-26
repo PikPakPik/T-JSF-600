@@ -8,6 +8,9 @@ import cors from 'cors';
 import {isLogged} from "./middleware/websocket/isLogged.middleware";
 import Room from './entity/Room.entity';
 import User from "./entity/User.entity";
+import * as commandEvent from "./event/command.event";
+import * as messageEvent from "./event/message.event";
+import * as disconnectEvent from "./event/disconnect.event";
 
 const app = express();
 
@@ -24,23 +27,30 @@ io.on("connection", async (socket: Socket) => {
     const user: any = socket.handshake.query.user;
     console.log("Socket connected: " + socket.id);
     await User.findOneAndUpdate({ _id: user._id }, { socketId: socket.id });
-    socket.broadcast.emit("user_login", user);
-
-    const room = await Room.findOne({ isDefault: true });
-    if (room) {
-        socket.join(room._id);
-        socket.broadcast.to(room._id).emit("notification", "Welcome to the chat " + user.username + "!");
-    }
-
-    socket.on("message", (arg: any) => {
-        console.log(socket.rooms, arg);
+    socket.broadcast.emit("notification", {
+        event: "user_login",
+        user: user
     });
 
-    socket.on("disconnect", async () => {
-        console.log("Socket disconnected: " + socket.id);
-        await User.findOneAndUpdate({ _id: user._id }, { socketId: null });
-        socket.broadcast.emit("user_logout", user);
-    });
+    socket.on("message", (arg: any) => { messageEvent.message(io, socket, arg) });
+
+    socket.on("command:nickname", (arg: any) => { commandEvent.nickname(io, socket, arg) });
+
+    socket.on("command:list", (arg: any) => { commandEvent.list(io, socket, arg) });
+
+    socket.on("command:create", (arg: any) => { commandEvent.createRoom(io, socket, arg) });
+
+    socket.on("command:delete", (arg: any) => { commandEvent.deleteRoom(io, socket, arg) });
+
+    socket.on("command:join", (arg: any) => { commandEvent.joinRoom(io, socket, arg) });
+
+    socket.on("command:quit", (arg: any) => { commandEvent.quitRoom(io, socket, arg) });
+
+    socket.on("command:users", (arg: any) => { commandEvent.users(io, socket, arg) });
+
+    socket.on("command:msg", (arg: any) => { commandEvent.privateMessage(io, socket, arg) });
+
+    socket.on("disconnect", () => { disconnectEvent.disconnect(io, socket) });
 });
 
 httpServer.listen(process.env.APP_PORT, () => {
