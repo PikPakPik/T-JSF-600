@@ -17,7 +17,7 @@ export const getMessages = async (req: Request, res: Response, next: NextFunctio
     if (!room) {
         return res.status(404).json({
             success: false,
-            message: "Room not found"
+            message: "room.not_found"
         });
     }
 

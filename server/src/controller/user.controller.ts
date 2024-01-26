@@ -21,7 +21,7 @@ export const updateData = async (req: Request, res: Response, next: NextFunction
     if (result.username === req.body.user.username && result.email === req.body.user.email) {
         return res.status(200).json({
             success: true,
-            message: "Nothing to update"
+            message: "user.not_updated",
         });
     }
 
@@ -38,7 +38,7 @@ export const updateData = async (req: Request, res: Response, next: NextFunction
         return res.status(409).json({
             error: 'Conflict',
             code: 409,
-            message: 'Username or email already exists',
+            message: 'user.credentials.already_in_use',
         });
     }
 
@@ -50,7 +50,7 @@ export const updateData = async (req: Request, res: Response, next: NextFunction
 
     return res.status(200).json({
         success: true,
-        message: "User updated"
+        message: "user.updated"
     });
 }
 
@@ -67,7 +67,7 @@ export const updatePassword = async (req: Request, res: Response, next: NextFunc
         return res.status(404).json({
             error: 'Not Found',
             code: 404,
-            message: 'User not found',
+            message: 'user.not_found',
         });
     }
 
@@ -76,7 +76,7 @@ export const updatePassword = async (req: Request, res: Response, next: NextFunc
         return res.status(403).json({
             error: 'Forbidden',
             code: 403,
-            message: 'Invalid password',
+            message: 'user.credentials.wrong_password',
         });
     }
 
@@ -87,7 +87,7 @@ export const updatePassword = async (req: Request, res: Response, next: NextFunc
 
     return res.status(200).json({
         success: true,
-        message: "Password updated"
+        message: "user.password_updated"
     });
 }
 
