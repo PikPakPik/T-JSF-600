@@ -1,10 +1,14 @@
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Chat } from "./components/ChatLayout";
 import Layout from "./components/Layout";
+import { DiscussionChat } from "./components/chat/DiscussionChat";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/theme-provider";
 import { useAuth } from "./hooks/useAuth";
-import { Chat } from "./pages/Chat/Chat";
+import { HomeChat } from "./pages/Chat/HomeChat";
 import Home from "./pages/Home";
 import { Login } from "./pages/Profile/Login";
 import { Signup } from "./pages/Profile/Signup";
@@ -29,7 +33,6 @@ const App = () => {
     fallback: React.ReactNode;
   }) => {
     const { user } = useAuth();
-    console.log("user", user);
     return !user ? element : fallback;
   };
 
@@ -67,12 +70,22 @@ const App = () => {
                     />
                   }
                 />
-                <Route path="/chat">
-                  <Route index element={<Chat />} />
+                <Route
+                  path="/chat"
+                  element={
+                    <PrivateRoute
+                      element={<Chat />}
+                      fallback={<Navigate to="/" />}
+                    />
+                  }
+                >
+                  <Route index element={<HomeChat />} />
+                  <Route path=":roomId" element={<DiscussionChat />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/" />} />
               </Route>
             </Routes>
+            <ToastContainer />
           </AuthProvider>
         </BrowserRouter>
       </ThemeProvider>

@@ -36,6 +36,15 @@
       "password": "Mot de passe",
       "signin": "Se connecter",
       "already_account": "Vous avez déjà un compte?"
+    },
+    "chat": {
+      "rooms": "Canaux",
+      "home": "Accueil",
+      "users": "Utilisateurs",
+      "message": {
+        "placeholder": "Écrivez votre message ici...",
+        "send": "Envoyer"
+      }
     }
   }
 }
