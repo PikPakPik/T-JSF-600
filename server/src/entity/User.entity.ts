@@ -2,6 +2,7 @@ import { model, Schema } from 'mongoose';
 
 interface UserDTO {
   username: string,
+  nickname: string | null,
   email: string,
   password: string,
   socketId: string | null,
@@ -12,6 +13,7 @@ interface UserDTO {
 
 const schema = new Schema<UserDTO>({
   username: { type: String, required: true, index: { unique: true } },
+  nickname: { type: String, default: null, index: { unique: true } },
   email: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
   socketId: { type: String, default: null },
