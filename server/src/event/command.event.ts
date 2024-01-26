@@ -10,7 +10,7 @@ export const nickname = async (io: Server, socket: Socket, arg: any) => {
     if (!arg.hasOwnProperty("nickname")) {
         return socket.emit("command:nickname", { success: false, message: "ws.argument.property_not_found" })
     }
-    if (arg.nickname === null || arg.nickname === undefined || arg.nickname === "") {
+    if (arg.nickname === null || arg.nickname === undefined) {
         await User.findOneAndUpdate({ _id: user._id }, { nickname: null });
         user.nickname = null;
         return socket.emit("command:nickname", { success: true, message: "user.nickname.updated" })
@@ -62,11 +62,62 @@ export const list = async (io: Server, socket: Socket, arg: any) => {
 }
 
 export const createRoom = async (io: Server, socket: Socket, arg: any) => {
-    console.log("command:create %s", arg);
+    const user: any = socket.handshake.query.user;
+    if (!(arg instanceof Object)) {
+        return socket.emit("command:create", { success: false, message: "ws.argument.invalid" })
+    }
+    if (!arg.hasOwnProperty("name")) {
+        return socket.emit("command:create", { success: false, message: "ws.argument.property_not_found" })
+    }
+    if (arg.name === null || arg.name === undefined || arg.name.length === 0) {
+        return socket.emit("command:create", { success: false, message: "ws.argument.is_empty" })
+    }
+    if (!arg.name.match(/^[a-zA-Z0-9]+$/)) {
+        return socket.emit("command:create", { success: false, message: "ws.argument.is_not_alphanumeric" })
+    }
+
+    const query = Room.where({ name: arg.name });
+    const searchRoom = await query.findOne();
+
+    if (searchRoom) {
+        return socket.emit("command:create", { success: false, message: "room.create.already_in_use" })
+    }
+
+    const room = new Room();
+    room.name = arg.name;
+    room.createdBy = user._id;
+    const lastRoom = await room.save();
+    io.emit("room_create", lastRoom);
+
+    return socket.emit("command:create", { success: true, message: "room.create.created" })
 }
 
 export const deleteRoom = async (io: Server, socket: Socket, arg: any) => {
-    console.log("command:delete %s", arg);
+    const user: any = socket.handshake.query.user;
+    if (!(arg instanceof Object)) {
+        return socket.emit("command:delete", { success: false, message: "ws.argument.invalid" })
+    }
+    if (!arg.hasOwnProperty("name")) {
+        return socket.emit("command:delete", { success: false, message: "ws.argument.property_not_found" })
+    }
+    if (arg.name === null || arg.name === undefined || arg.name.length === 0) {
+        return socket.emit("command:delete", { success: false, message: "ws.argument.is_empty" })
+    }
+    if (!arg.name.match(/^[a-zA-Z0-9]+$/)) {
+        return socket.emit("command:delete", { success: false, message: "ws.argument.is_not_alphanumeric" })
+    }
+
+    const query = Room.where({ name: arg.name, createdBy: user._id });
+    const searchRoom = await query.findOne();
+
+    if (!searchRoom) {
+        return socket.emit("command:delete", { success: false, message: "room.delete.not_found" })
+    }
+
+    await Room.deleteOne({ _id: searchRoom._id });
+
+    io.emit("room_delete", searchRoom);
+    return socket.emit("command:delete", { success: true, message: "room.delete.deleted" })
 }
 
 export const joinRoom = async (io: Server, socket: Socket, arg: any) => {
