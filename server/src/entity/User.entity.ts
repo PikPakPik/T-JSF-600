@@ -13,7 +13,7 @@ interface UserDTO {
 
 const schema = new Schema<UserDTO>({
   username: { type: String, required: true, index: { unique: true } },
-  nickname: { type: String, default: null, index: { unique: true } },
+  nickname: { type: String, default: null },
   email: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
   socketId: { type: String, default: null },

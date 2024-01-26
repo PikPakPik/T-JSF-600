@@ -9,7 +9,7 @@ interface RoomDTO extends Document {
 
 const schema = new Schema<RoomDTO>({
   name: { type: String, required: true },
-  isDefault: { type: Boolean, default: false, index: { unique: true } },
+  isDefault: { type: Boolean, default: false },
   createdBy: { type: Schema.Types.ObjectId, default: null, ref: 'User'},
   createdAt: { type: String, default: new Date().toISOString() },
 });
