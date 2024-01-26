@@ -90,3 +90,12 @@ export const updatePassword = async (req: Request, res: Response, next: NextFunc
         message: "Password updated"
     });
 }
+
+export const getConnectedUsers = async (req: Request, res: Response, next: NextFunction) => {
+    const users = await User.find({ socketId: { $ne: null } }).select(["-password", "-email"]);
+
+    return res.status(200).json({
+        success: true,
+        users: users
+    });
+}
