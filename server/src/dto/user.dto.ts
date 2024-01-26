@@ -1,26 +1,27 @@
-import {IsString, IsNotEmpty, IsEmail} from "class-validator";
+import {IsString, IsNotEmpty, IsEmail, IsAlphanumeric} from "class-validator";
 import {IsNotEqualTo} from "../validator/IsNotEqualTo.validator";
 import {IsEqualTo} from "../validator/IsEqualTo.validator";
 
 export class UserDTO {
-    @IsString()
-    @IsNotEmpty()
+    @IsString({ message: 'validation.is_string' })
+    @IsNotEmpty({ message: 'validation.is_no_empty' })
+    @IsAlphanumeric("fr-FR", { message: 'validation.is_alphanumeric' })
     username?: String;
 
-    @IsEmail()
-    @IsNotEmpty()
+    @IsEmail({}, { message: 'validation.is_email' })
+    @IsNotEmpty({ message: 'validation.is_no_empty' })
     email?: String;
 }
 
 export class UserPasswordDTO {
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'validation.is_no_empty' })
     currentPassword?: String;
 
-    @IsNotEmpty()
-    @IsNotEqualTo('currentPassword')
+    @IsNotEmpty({ message: 'validation.is_no_empty' })
+    @IsNotEqualTo('currentPassword', { message: 'validation.is_not_equal_to' })
     newPassword?: String;
 
-    @IsNotEmpty()
-    @IsEqualTo('newPassword')
+    @IsNotEmpty({ message: 'validation.is_no_empty' })
+    @IsEqualTo('newPassword', { message: 'validation.is_equal_to' })
     confirmNewPassword?: String;
 }

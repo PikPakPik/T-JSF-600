@@ -24,7 +24,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         return res.status(403).json({
             error: 'Forbidden',
             code: 403,
-            message: 'Invalid username or password',
+            message: 'user.credentials.invalid',
         });
     }
 
@@ -33,7 +33,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         return res.status(403).json({
             error: 'Forbidden',
             code: 403,
-            message: 'Invalid username or password',
+            message: 'user.credentials.invalid',
         });
     }
 

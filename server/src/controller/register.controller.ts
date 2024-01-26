@@ -45,7 +45,7 @@ export const register = async (
     return res.status(400).json({
       success: false,
       token: null,
-      message: "An account already exists with this email address or username",
+      message: "user.credentials.already_exists"
     });
   }
 };
