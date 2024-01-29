@@ -1,8 +1,8 @@
-import { model, Schema, Document } from 'mongoose';
+import {model, Schema, Document, Types} from 'mongoose';
 
 interface PrivateMessageDTO extends Document {
-    fromUser: Schema.Types.ObjectId,
-    toUser: Schema.Types.ObjectId,
+    fromUser: Types.ObjectId,
+    toUser: Types.ObjectId,
     message: string,
     createdAt: string,
 }
@@ -10,7 +10,7 @@ interface PrivateMessageDTO extends Document {
 const schema = new Schema<PrivateMessageDTO>({
     fromUser: { type: Schema.Types.ObjectId, ref: 'User'},
     toUser: { type: Schema.Types.ObjectId, ref: 'User'},
-    message: { type: String, required: true },
+    message: { type: String },
     createdAt: { type: String, default: new Date().toISOString() },
 });
 

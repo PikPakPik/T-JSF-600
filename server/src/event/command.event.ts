@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import User from "../entity/User.entity";
 import Room from "../entity/Room.entity";
+import PrivateMessage from "../entity/PrivateMessage.entity";
 
 export const nickname = async (io: Server, socket: Socket, arg: any) => {
     const user: any = socket.handshake.query.user;
@@ -148,13 +149,15 @@ export const joinRoom = async (io: Server, socket: Socket, arg: any) => {
         return socket.emit("command:join", { success: false, message: "room.join.not_found" })
     }
 
-    socket.join(searchRoom._id);
-    const username = user.nickname ? user.nickname : user.username;
-    socket.broadcast.to(searchRoom._id).emit("notification", {
-        event: "room_join",
-        message: username + " has joined the room",
-        room: searchRoom._id
-    });
+    if (!socket.rooms.has(searchRoom._id.toString())) {
+        socket.join(searchRoom._id.toString());
+        const username = user.nickname ? user.nickname : user.username;
+        socket.broadcast.to(searchRoom._id.toString()).emit("notification", {
+            event: "room_join",
+            message: username + " has joined the room",
+            room: searchRoom._id
+        });
+    }
 
     return socket.emit("command:join", { success: true, message: "room.join.joined" })
 }
@@ -181,13 +184,15 @@ export const quitRoom = async (io: Server, socket: Socket, arg: any) => {
         return socket.emit("command:quit", { success: false, message: "room.quit.not_found" })
     }
 
-    socket.leave(searchRoom._id);
-    const username = user.nickname ? user.nickname : user.username;
-    socket.broadcast.to(searchRoom._id).emit("notification", {
-        event: "room_quit",
-        message: username + " has left the room",
-        room: searchRoom._id
-    });
+    if (socket.rooms.has(searchRoom._id.toString())) {
+        socket.leave(searchRoom._id.toString());
+        const username = user.nickname ? user.nickname : user.username;
+        socket.broadcast.to(searchRoom._id.toString()).emit("notification", {
+            event: "room_quit",
+            message: username + " has left the room",
+            room: searchRoom._id
+        });
+    }
 
     return socket.emit("command:quit", { success: true, message: "room.quit.exited" })
 }
@@ -231,16 +236,18 @@ export const privateMessage = async (io: Server, socket: Socket, arg: any) => {
     const lastPrivateMessageSent = await privateMessage.save();
 
     const toUsername = searchUser.nickname ? searchUser.nickname : searchUser.username;
-    socket.to(user.socketId).emit("notification", {
+    socket.to(user.socketId.toString()).emit("notification", {
         event: "private_message",
         message: "Your message has been sent to" + toUsername,
     });
-    const fromUsername = user.nickname ? user.nickname : user.username;
-    socket.to(searchUser.socketId).emit("notification", {
-        event: "private_message",
-        message: fromUsername + " has just sent you a PM",
-    });
-    socket.to(searchUser.socketId).emit("private_message", { from: fromUsername, message: arg.message });
+    if (searchUser.socketId) {
+        const fromUsername = user.nickname ? user.nickname : user.username;
+        socket.to(searchUser.socketId.toString()).emit("notification", {
+            event: "private_message",
+            message: fromUsername + " has just sent you a PM",
+        });
+        socket.to(searchUser.socketId.toString()).emit("private_message", { from: fromUsername, message: arg.message });
+    }
 
     return socket.emit("command:msg", { success: true, message: "msg.message.send", privateMessage: lastPrivateMessageSent })
 }
