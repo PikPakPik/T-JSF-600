@@ -33,9 +33,7 @@ export function Signup() {
         email: email.value,
         password: password.value,
       },
-      (err) => {
-        console.error(err);
-      }
+      () => {}
     );
   };
   return (
