@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Chat } from "./components/ChatLayout";
+import { ChatLayout } from "./components/ChatLayout";
 import Layout from "./components/Layout";
 import { DiscussionChat } from "./components/chat/DiscussionChat";
 import { AuthProvider } from "./context/AuthContext";
@@ -74,7 +74,7 @@ const App = () => {
                   path="/chat"
                   element={
                     <PrivateRoute
-                      element={<Chat />}
+                      element={<ChatLayout />}
                       fallback={<Navigate to="/" />}
                     />
                   }
