@@ -36,6 +36,12 @@ export function Signup() {
       () => {}
     );
   };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleLogin(e);
+    }
+  };
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <Card className="max-w-sm">
@@ -51,7 +57,12 @@ export function Signup() {
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="username">{t("signup.username")}</Label>
-            <Input id="username" type="text" placeholder="John Doe" />
+            <Input
+              id="username"
+              type="text"
+              onKeyDown={handleKeyPress}
+              placeholder="John Doe"
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="email">{t("signup.email")}</Label>
@@ -64,6 +75,7 @@ export function Signup() {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="********"
+                onKeyDown={handleKeyPress}
               />
               <Button
                 type="button"
