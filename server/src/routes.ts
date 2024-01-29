@@ -29,7 +29,7 @@ router.post('/register', (req: Request, res: Response, next: NextFunction) => re
 router.get('/user', isLogged, (req: Request, res: Response, next: NextFunction) => userController.me(req, res, next));
 router.patch('/user', isLogged, (req: Request, res: Response, next: NextFunction) => userController.updateData(req, res, next));
 router.put('/user/password', isLogged, (req: Request, res: Response, next: NextFunction) => userController.updatePassword(req, res, next));
-router.put('/user/connected', isLogged, (req: Request, res: Response, next: NextFunction) => userController.getConnectedUsers(req, res, next));
+router.get('/user/connected', isLogged, (req: Request, res: Response, next: NextFunction) => userController.getConnectedUsers(req, res, next));
 
 router.get('/rooms', isLogged, (req: Request, res: Response, next: NextFunction) => roomController.get(req, res, next));
 router.get('/rooms/:roomId/messages', isLogged, (req: Request, res: Response, next: NextFunction) => roomController.getMessages(req, res, next));

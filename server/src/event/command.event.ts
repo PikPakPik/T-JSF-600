@@ -224,7 +224,23 @@ export const privateMessage = async (io: Server, socket: Socket, arg: any) => {
         return socket.emit("command:msg", { success: false, message: "msg.user.not_found" })
     }
 
-    // TODO: Send message to user
+    const privateMessage = new PrivateMessage();
+    privateMessage.fromUser = user._id;
+    privateMessage.toUser = searchUser._id;
+    privateMessage.message = arg.message;
+    const lastPrivateMessageSent = await privateMessage.save();
 
-    return socket.emit("command:msg", { success: true, message: "msg.message.send" })
+    const toUsername = searchUser.nickname ? searchUser.nickname : searchUser.username;
+    socket.to(user.socketId).emit("notification", {
+        event: "private_message",
+        message: "Your message has been sent to" + toUsername,
+    });
+    const fromUsername = user.nickname ? user.nickname : user.username;
+    socket.to(searchUser.socketId).emit("notification", {
+        event: "private_message",
+        message: fromUsername + " has just sent you a PM",
+    });
+    socket.to(searchUser.socketId).emit("private_message", { from: fromUsername, message: arg.message });
+
+    return socket.emit("command:msg", { success: true, message: "msg.message.send", privateMessage: lastPrivateMessageSent })
 }
