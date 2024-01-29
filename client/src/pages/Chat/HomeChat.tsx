@@ -8,13 +8,9 @@ export const HomeChat = () => {
       </p>
       <img
         alt="Welcome Image"
-        className="object-cover"
+        className="object-cover aspect-[500/500] sm:aspect-[400/400] md:aspect-[500/500] lg:aspect-[600/600] xl:aspect-[700/700] max-w-[100%]"
         height={500}
         src={chat}
-        style={{
-          aspectRatio: "500/500",
-          objectFit: "cover",
-        }}
         width={500}
       />
     </div>

@@ -50,6 +50,7 @@ export const message = async (io: Server, socket: Socket, arg: any) => {
   return socket.to(searchRoom._id.toString()).emit("message", {
     success: true,
     message: arg.message,
+    room: searchRoom._id,
     username: username,
     createdAt: lastMessage.createdAt,
   });

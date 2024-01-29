@@ -3,6 +3,7 @@ export type User = {
   username: string;
   email: string;
   createdAt: string;
+  nickname: string;
   updatedAt: string;
   token: string;
 };
@@ -10,4 +11,5 @@ export type User = {
 export type UserMessage = {
   _id: string;
   username: string;
+  nickname: string;
 };

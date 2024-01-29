@@ -7,12 +7,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
+import { useSocket } from "@/hooks/useSocket";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 const ProfileMenu = () => {
   const { t } = useTranslation();
   const { user, logout: logoutUser } = useAuth();
+  const socket = useSocket();
+
+  const handleLogout = () => {
+    socket?.emit("disconnect");
+    logoutUser();
+  };
 
   return (
     <DropdownMenu>
@@ -53,7 +60,7 @@ const ProfileMenu = () => {
             <DropdownMenuItem>
               {t("profile_dropdown.connected.settings")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={logoutUser}>
+            <DropdownMenuItem onClick={handleLogout}>
               {t("profile_dropdown.connected.logout")}
             </DropdownMenuItem>
           </>
