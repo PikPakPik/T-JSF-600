@@ -87,6 +87,7 @@ export const createRoom = async (io: Server, socket: Socket, arg: any) => {
     const room = new Room();
     room.name = arg.name;
     room.createdBy = user._id;
+    room.createdAt = new Date().toISOString();
     const lastRoom = await room.save();
     io.emit("notification", {
         event: "room_create",
@@ -233,6 +234,7 @@ export const privateMessage = async (io: Server, socket: Socket, arg: any) => {
     privateMessage.fromUser = user._id;
     privateMessage.toUser = searchUser._id;
     privateMessage.message = arg.message;
+    privateMessage.createdAt = new Date().toISOString();
     const lastPrivateMessageSent = await privateMessage.save();
 
     const toUsername = searchUser.nickname ? searchUser.nickname : searchUser.username;

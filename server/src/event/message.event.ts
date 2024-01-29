@@ -43,6 +43,7 @@ export const message = async (io: Server, socket: Socket, arg: any) => {
   message.user = user._id;
   message.message = arg.message;
   message.room = searchRoom._id;
+  message.createdAt = new Date().toISOString();
   const lastMessage = await message.save();
 
   const username = user.nickname ? user.nickname : user.username;
