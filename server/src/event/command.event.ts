@@ -19,7 +19,7 @@ export const nickname = async (io: Server, socket: Socket, arg: any) => {
     if (arg.nickname.length === 0) {
         return socket.emit("command:nickname", { success: false, message: "ws.argument.is_empty" })
     }
-    if (!arg.nickname.match(/^[a-zA-Z0-9]+$/)) {
+    if (!arg.nickname.match(/^[a-zA-Z0-9ÀÁÂÆÇÈÉÊËÌÍÎÏÑÒÓÔŒÙÚÛÜÝŸàáâæçèéêëìíîïñòóôœùúûüýÿ]+$/)) {
         return socket.emit("command:nickname", { success: false, message: "ws.argument.is_not_alphanumeric" })
     }
 
@@ -73,7 +73,7 @@ export const createRoom = async (io: Server, socket: Socket, arg: any) => {
     if (arg.name === null || arg.name === undefined || arg.name.length === 0) {
         return socket.emit("command:create", { success: false, message: "ws.argument.is_empty" })
     }
-    if (!arg.name.match(/^[a-zA-Z0-9]+$/)) {
+    if (!arg.name.match(/^[a-zA-Z0-9ÀÁÂÆÇÈÉÊËÌÍÎÏÑÒÓÔŒÙÚÛÜÝŸàáâæçèéêëìíîïñòóôœùúûüýÿ]+$/)) {
         return socket.emit("command:create", { success: false, message: "ws.argument.is_not_alphanumeric" })
     }
 
@@ -107,7 +107,7 @@ export const deleteRoom = async (io: Server, socket: Socket, arg: any) => {
     if (arg.name === null || arg.name === undefined || arg.name.length === 0) {
         return socket.emit("command:delete", { success: false, message: "ws.argument.is_empty" })
     }
-    if (!arg.name.match(/^[a-zA-Z0-9]+$/)) {
+    if (!arg.name.match(/^[a-zA-Z0-9ÀÁÂÆÇÈÉÊËÌÍÎÏÑÒÓÔŒÙÚÛÜÝŸàáâæçèéêëìíîïñòóôœùúûüýÿ]+$/)) {
         return socket.emit("command:delete", { success: false, message: "ws.argument.is_not_alphanumeric" })
     }
 
@@ -138,7 +138,7 @@ export const joinRoom = async (io: Server, socket: Socket, arg: any) => {
     if (arg.name === null || arg.name === undefined || arg.name.length === 0) {
         return socket.emit("command:join", { success: false, message: "ws.argument.is_empty" })
     }
-    if (!arg.name.match(/^[a-zA-Z0-9]+$/)) {
+    if (!arg.name.match(/^[a-zA-Z0-9ÀÁÂÆÇÈÉÊËÌÍÎÏÑÒÓÔŒÙÚÛÜÝŸàáâæçèéêëìíîïñòóôœùúûüýÿ]+$/)) {
         return socket.emit("command:join", { success: false, message: "ws.argument.is_not_alphanumeric" })
     }
 
@@ -154,7 +154,8 @@ export const joinRoom = async (io: Server, socket: Socket, arg: any) => {
         const username = user.nickname ? user.nickname : user.username;
         socket.broadcast.to(searchRoom._id.toString()).emit("notification", {
             event: "room_join",
-            message: username + " has joined the room",
+            username: username,
+            message: "room.join.joined",
             room: searchRoom._id
         });
     }
@@ -173,7 +174,7 @@ export const quitRoom = async (io: Server, socket: Socket, arg: any) => {
     if (arg.name === null || arg.name === undefined || arg.name.length === 0) {
         return socket.emit("command:quit", { success: false, message: "ws.argument.is_empty" })
     }
-    if (!arg.name.match(/^[a-zA-Z0-9]+$/)) {
+    if (!arg.name.match(/^[a-zA-Z0-9ÀÁÂÆÇÈÉÊËÌÍÎÏÑÒÓÔŒÙÚÛÜÝŸàáâæçèéêëìíîïñòóôœùúûüýÿ]+$/)) {
         return socket.emit("command:quit", { success: false, message: "ws.argument.is_not_alphanumeric" })
     }
 
@@ -189,7 +190,8 @@ export const quitRoom = async (io: Server, socket: Socket, arg: any) => {
         const username = user.nickname ? user.nickname : user.username;
         socket.broadcast.to(searchRoom._id.toString()).emit("notification", {
             event: "room_quit",
-            message: username + " has left the room",
+            username: username,
+            message: "room.quit.exited",
             room: searchRoom._id
         });
     }
@@ -238,15 +240,17 @@ export const privateMessage = async (io: Server, socket: Socket, arg: any) => {
     const toUsername = searchUser.nickname ? searchUser.nickname : searchUser.username;
     socket.to(user.socketId.toString()).emit("notification", {
         event: "private_message",
-        message: "Your message has been sent to" + toUsername,
+        username: toUsername,
+        message: "msg.message.send",
     });
     if (searchUser.socketId) {
         const fromUsername = user.nickname ? user.nickname : user.username;
-        socket.to(searchUser.socketId.toString()).emit("notification", {
+        socket.to(searchUser.socketId).emit("notification", {
             event: "private_message",
-            message: fromUsername + " has just sent you a PM",
+            username: fromUsername,
+            message: "msg.message.received",
         });
-        socket.to(searchUser.socketId.toString()).emit("private_message", { from: fromUsername, message: arg.message });
+        socket.to(searchUser.socketId).emit("private_message", { from: fromUsername, message: arg.message });
     }
 
     return socket.emit("command:msg", { success: true, message: "msg.message.send", privateMessage: lastPrivateMessageSent })
