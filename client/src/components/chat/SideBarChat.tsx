@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { useSocket } from "@/hooks/useSocket";
+import useSocketStore from "@/store/useSocketStore";
 import { Room } from "@/types/Room";
 import { User } from "@/types/User";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ export default function SideBarChat() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const { t } = useTranslation();
-  const socket = useSocket();
+  const socket = useSocketStore((state) => state.socket);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -36,8 +36,6 @@ export default function SideBarChat() {
       setRooms(nonDefaultRooms);
     }
 
-    fetchData();
-
     async function fetchConnectedUsers() {
       const response = await fetch("http://localhost:3000/api/user/connected", {
         method: "GET",
@@ -54,15 +52,20 @@ export default function SideBarChat() {
       setUsers(filteredUsers);
     }
 
+    fetchData();
     fetchConnectedUsers();
 
-    socket?.on("notification", (data: any) => {
-      if (data.event === "room_create") {
-        fetchData();
-      } else if (data.event === "room_delete") {
+    const handleNotification = (data: any) => {
+      if (data.event === "room_create" || data.event === "room_delete") {
         fetchData();
       }
-    });
+    };
+
+    socket?.on("notification", handleNotification);
+
+    return () => {
+      socket?.off("notification", handleNotification);
+    };
   }, [socket, user]);
 
   const handleJoinRoom = async (room: Room) => {
@@ -70,7 +73,7 @@ export default function SideBarChat() {
   };
 
   useEffect(() => {
-    socket?.on("command:join", (data: any) => {
+    const handleJoin = (data: any) => {
       const updatedRooms = rooms.map((room: Room) => {
         if (room._id === data.room) {
           return { ...room, isJoined: true };
@@ -78,8 +81,9 @@ export default function SideBarChat() {
         return room;
       });
       setRooms(updatedRooms);
-    });
-    socket?.on("command:quit", (data: any) => {
+    };
+
+    const handleQuit = (data: any) => {
       const updatedRooms = rooms.map((room: Room) => {
         if (room._id === data.room) {
           return { ...room, isJoined: false };
@@ -87,7 +91,15 @@ export default function SideBarChat() {
         return room;
       });
       setRooms(updatedRooms);
-    });
+    };
+
+    socket?.on("command:join", handleJoin);
+    socket?.on("command:quit", handleQuit);
+
+    return () => {
+      socket?.off("command:join", handleJoin);
+      socket?.off("command:quit", handleQuit);
+    };
   }, [rooms, socket]);
 
   return (

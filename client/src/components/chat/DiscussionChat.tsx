@@ -1,4 +1,4 @@
-import { useSocket } from "@/hooks/useSocket";
+import useSocketStore from "@/store/useSocketStore";
 import { Message } from "@/types/Message";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -9,23 +9,27 @@ export const DiscussionChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [messageServer, setMessageServer] = useState<string>();
   const { roomId } = useParams();
-  const socket = useSocket();
+  const socket = useSocketStore((state) => state.socket);
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const roomName = useRef<string>("");
 
   const fetchData = useCallback(async () => {
-    const response = await fetch(
-      `http://localhost:3000/api/rooms/${roomId}/messages`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      }
-    );
-    const data = await response.json();
-    roomName.current = data.room.name;
-    setMessages(data.messages);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/rooms/${roomId}/messages`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      const data = await response.json();
+      roomName.current = data.room.name;
+      setMessages(data.messages);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
   }, [roomId]);
 
   useEffect(() => {
@@ -73,7 +77,7 @@ export const DiscussionChat = () => {
 
   useEffect(() => {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-  });
+  }, [messages]);
 
   useEffect(() => {
     socket?.emit("command:join", { name: roomName.current });
@@ -92,9 +96,8 @@ export const DiscussionChat = () => {
 
   const handleSendMessage = (message: string) => {
     if (!message) return;
-    const command = message.split(" ")[0].substring(1);
-    const args = message.split(" ").slice(1);
-    switch (command) {
+    const [command, ...args] = message.split(" ");
+    switch (command.substring(1)) {
       case "join":
         socket?.emit("command:join", { name: args[0] });
         break;

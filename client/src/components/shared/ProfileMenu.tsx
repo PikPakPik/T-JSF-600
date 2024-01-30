@@ -7,14 +7,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
-import { useSocket } from "@/hooks/useSocket";
+import useSocketStore from "@/store/useSocketStore";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 const ProfileMenu = () => {
   const { t } = useTranslation();
   const { user, logout: logoutUser } = useAuth();
-  const socket = useSocket();
+  const socket = useSocketStore((state) => state.socket);
 
   const handleLogout = () => {
     socket?.emit("disconnect");
