@@ -1,12 +1,11 @@
-import express, { Request, Response, NextFunction } from 'express';
-import * as loginController from './controller/login.controller';
-import * as registerController from './controller/register.controller';
-import * as userController from './controller/user.controller';
-import * as roomController from './controller/room.controller';
-import * as privateMessageController from './controller/privateMessage.controller';
+import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
-import {isLogged} from "./middleware/express/isLogged.middleware";
-import {getConnectedUsers} from "./controller/user.controller";
+import * as loginController from './controller/login.controller';
+import * as privateMessageController from './controller/privateMessage.controller';
+import * as registerController from './controller/register.controller';
+import * as roomController from './controller/room.controller';
+import * as userController from './controller/user.controller';
+import { isLogged } from "./middleware/express/isLogged.middleware";
 const router = express.Router();
 
 mongoose.connect(`mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`)

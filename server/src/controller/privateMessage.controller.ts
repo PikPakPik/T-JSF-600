@@ -1,7 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import Room from '../entity/Room.entity';
-import Message from '../entity/Message.entity';
+import { NextFunction, Request, Response } from 'express';
 import PrivateMessage from '../entity/PrivateMessage.entity';
+import Room from '../entity/Room.entity';
 import User from '../entity/User.entity';
 
 export const get = async (req: Request, res: Response, next: NextFunction) => {
