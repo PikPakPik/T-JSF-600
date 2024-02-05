@@ -4,20 +4,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MessageChat } from "./MessageChat";
 import { MessageInput } from "./MessageInput";
-import { t } from "i18next";
 
-export const DiscussionChat = () => {
+export const DiscussionPrivateChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [messageServer, setMessageServer] = useState<string>();
-  const { roomId } = useParams();
+  const { user } = useParams();
   const socket = useSocketStore((state) => state.socket);
   const lastMessageRef = useRef<HTMLDivElement>(null);
-  const roomName = useRef<string>("");
+  const userName = useRef<string>("");
 
   const fetchData = useCallback(async () => {
     try {
       const response = await fetch(
-        `http://10.29.126.16:3000/api/rooms/${roomId}/messages`,
+        `http://10.29.126.16:3000/api/privateMessages/${user}`,
         {
           method: "GET",
           headers: {
@@ -26,23 +25,23 @@ export const DiscussionChat = () => {
         }
       );
       const data = await response.json();
-      roomName.current = data.room.name;
       setMessages(data.messages);
+      userName.current = data.userParam.nickname || data.userParam.username;
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
-  }, [roomId]);
+  }, [user]);
 
   useEffect(() => {
     fetchData();
     return () => {
       setMessages([]);
     };
-  }, [fetchData, roomId]);
+  }, [fetchData, user]);
 
   useEffect(() => {
-    const handleMessage = (data: any) => {
-      if (window.location.pathname === `/chat/${data.room}`) {
+    const handlePrivateMessage = (data: any) => {
+      if (window.location.pathname === `/chat/user/${data.userId}`) {
         fetchData();
       }
     };
@@ -67,29 +66,17 @@ export const DiscussionChat = () => {
       );
     };
 
-    const handleNotification = (data: any) => {
-      if (
-        (data.event === "room_join" || data.event === "room_quit") &&
-        window.location.pathname === `/chat/${data.room}`
-      ) {
-        setMessageServer(t(data.message, { name: data.username }));
-        setTimeout(() => {
-          setMessageServer("");
-        }, 3000);
-      }
-    };
-
-    socket?.on("message", handleMessage);
+    socket?.on("private_message", handlePrivateMessage);
     socket?.on("command:list", handleCommandList);
     socket?.on("command:users", handleCommandUsers);
-    socket?.on("notification", handleNotification);
+    socket?.on("command:msg", handlePrivateMessage);
     socket;
 
     return () => {
-      socket?.off("message", handleMessage);
+      socket?.off("private_message", handlePrivateMessage);
       socket?.off("command:list", handleCommandList);
       socket?.off("command:users", handleCommandUsers);
-      socket?.off("notification", handleNotification);
+      socket?.off("command:msg", handlePrivateMessage);
     };
   }, [fetchData, socket]);
 
@@ -129,10 +116,6 @@ export const DiscussionChat = () => {
         socket?.emit("command:help");
         break;
     }
-    if (!message.startsWith("/")) {
-      socket?.emit("message", { message, roomId });
-      fetchData();
-    }
   };
 
   return (
@@ -140,7 +123,7 @@ export const DiscussionChat = () => {
       <div className="flex flex-col flex-1 mb-4 overflow-y-auto">
         {messages.map((message) => (
           <div key={message._id}>
-            <MessageChat message={message} isPrivate={false} />
+            <MessageChat message={message} isPrivate={true} />
             <div ref={lastMessageRef} />
           </div>
         ))}
@@ -154,7 +137,7 @@ export const DiscussionChat = () => {
         )}
       </div>
       <div className="mt-auto">
-        <MessageInput onSendMessage={handleSendMessage} show={true} />
+        <MessageInput onSendMessage={handleSendMessage} show={true} messageTo={userName.current} />
       </div>
     </div>
   );

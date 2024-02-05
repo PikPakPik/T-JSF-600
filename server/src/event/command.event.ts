@@ -391,7 +391,7 @@ export const privateMessage = async (io: Server, socket: Socket, arg: any) => {
   const toUsername = searchUser.nickname
     ? searchUser.nickname
     : searchUser.username;
-  socket.to(user.socketId.toString()).emit("notification", {
+  socket.to(user.socketId).emit("notification", {
     event: "private_message",
     username: toUsername,
     message: "msg.message.send",
@@ -405,12 +405,13 @@ export const privateMessage = async (io: Server, socket: Socket, arg: any) => {
     });
     socket
       .to(searchUser.socketId)
-      .emit("private_message", { from: fromUsername, message: arg.message });
+      .emit("private_message", { from: fromUsername, message: arg.message, userId: user._id });
   }
 
   return socket.emit("command:msg", {
     success: true,
     message: "msg.message.send",
+    userId: searchUser._id,
     privateMessage: lastPrivateMessageSent,
   });
 };

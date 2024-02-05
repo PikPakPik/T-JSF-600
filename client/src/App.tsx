@@ -12,6 +12,7 @@ import { HomeChat } from "./pages/Chat/HomeChat";
 import Home from "./pages/Home";
 import { Login } from "./pages/Profile/Login";
 import { Signup } from "./pages/Profile/Signup";
+import { DiscussionPrivateChat } from "./components/chat/DiscussionPrivateChat";
 
 const App = () => {
   const PrivateRoute = ({
@@ -81,6 +82,9 @@ const App = () => {
                 >
                   <Route index element={<HomeChat />} />
                   <Route path=":roomId" element={<DiscussionChat />} />
+                  <Route path="user">
+                    <Route path=":user" element={<DiscussionPrivateChat />} />
+                  </Route>
                 </Route>
                 <Route path="*" element={<Navigate to="/" />} />
               </Route>

@@ -161,7 +161,7 @@ export default function SideBarChat() {
           </h3>
           <ul className="space-y-2">
             {users.map((user: User) => (
-              <li className="flex items-center space-x-2" key={user._id}>
+              <li className="flex items-center space-x-2" key={user._id} onClick={() => navigate(`/chat/user/${user._id}`)}>
                 <Avatar className="w-6 h-6">
                   <AvatarImage
                     alt="User Avatar"
