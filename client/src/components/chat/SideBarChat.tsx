@@ -19,7 +19,7 @@ export default function SideBarChat() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("http://localhost:3000/api/rooms", {
+      const response = await fetch("http://10.29.126.16:3000/api/rooms", {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -37,12 +37,15 @@ export default function SideBarChat() {
     }
 
     async function fetchConnectedUsers() {
-      const response = await fetch("http://localhost:3000/api/user/connected", {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+      const response = await fetch(
+        "http://10.29.126.16:3000/api/user/connected",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
       const data = await response.json();
 
       const filteredUsers = data.users.filter(
@@ -81,6 +84,7 @@ export default function SideBarChat() {
         return room;
       });
       setRooms(updatedRooms);
+      navigate(`/chat/${data.room}`);
     };
 
     const handleQuit = (data: any) => {
@@ -91,6 +95,7 @@ export default function SideBarChat() {
         return room;
       });
       setRooms(updatedRooms);
+      navigate("/chat");
     };
 
     socket?.on("command:join", handleJoin);
@@ -100,7 +105,7 @@ export default function SideBarChat() {
       socket?.off("command:join", handleJoin);
       socket?.off("command:quit", handleQuit);
     };
-  }, [rooms, socket]);
+  }, [rooms, socket, navigate]);
 
   return (
     <div

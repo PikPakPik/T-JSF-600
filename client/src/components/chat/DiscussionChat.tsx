@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MessageChat } from "./MessageChat";
 import { MessageInput } from "./MessageInput";
+import { t } from "i18next";
 
 export const DiscussionChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -16,7 +17,7 @@ export const DiscussionChat = () => {
   const fetchData = useCallback(async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/rooms/${roomId}/messages`,
+        `http://10.29.126.16:3000/api/rooms/${roomId}/messages`,
         {
           method: "GET",
           headers: {
@@ -40,59 +41,61 @@ export const DiscussionChat = () => {
   }, [fetchData, roomId]);
 
   useEffect(() => {
-    socket?.on("message", (data: any) => {
+    const handleMessage = (data: any) => {
       if (window.location.pathname === `/chat/${data.room}`) {
         fetchData();
       }
-    });
-  }, [fetchData, socket]);
+    };
 
-  useEffect(() => {
-    socket?.on("command:list", (data: any) => {
+    const handleCommandList = (data: any) => {
       const roomsSearch = data.data;
+      setMessageServer(
+        roomsSearch.length === 0
+          ? "No rooms found"
+          : roomsSearch.map((room: any) => room.name).join(", ")
+      );
+    };
 
-      if (roomsSearch.length === 0) {
-        setMessageServer("No rooms found");
-      } else {
-        setMessageServer(roomsSearch.map((room: any) => room.name).join(", "));
-      }
-    });
-  }, [socket]);
-
-  useEffect(() => {
-    socket?.on("command:users", (data: any) => {
+    const handleCommandUsers = (data: any) => {
       const usersSearch = data.users;
+      setMessageServer(
+        usersSearch.length === 0
+          ? "No users found"
+          : usersSearch
+              .map((user: any) => user.nickname || user.username)
+              .join(", ")
+      );
+    };
 
-      if (usersSearch.length === 0) {
-        setMessageServer("No users found");
-      } else {
-        setMessageServer(
-          usersSearch
-            .map((user: any) => user.nickname || user.username)
-            .join(", ")
-        );
-      }
-    });
-  }, [socket]);
-
-  useEffect(() => {
-    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  useEffect(() => {
-    socket?.emit("command:join", { name: roomName.current });
-    socket?.on("notification", (data: any) => {
+    const handleNotification = (data: any) => {
       if (
         (data.event === "room_join" || data.event === "room_quit") &&
         window.location.pathname === `/chat/${data.room}`
       ) {
-        setMessageServer(data.message);
+        setMessageServer(t(data.message, { name: data.username }));
         setTimeout(() => {
           setMessageServer("");
         }, 3000);
       }
-    });
-  });
+    };
+
+    socket?.on("message", handleMessage);
+    socket?.on("command:list", handleCommandList);
+    socket?.on("command:users", handleCommandUsers);
+    socket?.on("notification", handleNotification);
+    socket;
+
+    return () => {
+      socket?.off("message", handleMessage);
+      socket?.off("command:list", handleCommandList);
+      socket?.off("command:users", handleCommandUsers);
+      socket?.off("notification", handleNotification);
+    };
+  }, [fetchData, socket]);
+
+  useEffect(() => {
+    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSendMessage = (message: string) => {
     if (!message) return;

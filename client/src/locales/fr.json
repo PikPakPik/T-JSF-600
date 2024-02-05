@@ -45,6 +45,12 @@
         "placeholder": "Écrivez votre message ici...",
         "send": "Envoyer"
       }
+    },
+    "room": {
+      "user": {
+        "joined":"{{name}} a rejoint le canal",
+        "exited":"{{name}} a quitté le canal"
+      }
     }
   }
 }
