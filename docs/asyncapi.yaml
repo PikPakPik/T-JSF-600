@@ -1,9 +1,4 @@
-asyncapi: 2.6.0
+asyncapi: 3.0.0
 info:
-  title: Chat Application
+  title: IRC Chat
   version: 1.0.0
-servers:
-  testing:
-    url: test.mosquitto.org:1883
-    protocol: mqtt
-    description: Test broker
