@@ -1,11 +1,12 @@
-import "moment/locale/en-gb";
-import "moment/locale/fr";
-import moment from "moment/min/moment-with-locales";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import { useTranslation } from "react-i18next";
+dayjs.extend(localizedFormat);
+import("dayjs/locale/fr");
 
-export function ISOToDateTime(isoDate: string): string {
+export function ISOToDateTime(isoDate: string | undefined): string {
   const { i18n } = useTranslation();
-  moment.locale(i18n.language);
-  const mmnt = moment(isoDate);
-  return mmnt.format("LLL");
+  dayjs.locale(i18n.language === "gb" ? "en-gb" : i18n.language);
+  const dt = dayjs(isoDate);
+  return dt.format("LLL");
 }

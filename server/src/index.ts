@@ -1,16 +1,15 @@
-import express, { Request, Response, NextFunction } from 'express';
-import {createServer} from "node:http";
-import {Server, Socket} from "socket.io";
-import dotenv from 'dotenv';
-dotenv.config();
-import routes from './routes';
 import cors from 'cors';
-import {isLogged} from "./middleware/websocket/isLogged.middleware";
-import Room from './entity/Room.entity';
+import dotenv from 'dotenv';
+import express from 'express';
+import { createServer } from "node:http";
+import { Server, Socket } from "socket.io";
 import User from "./entity/User.entity";
 import * as commandEvent from "./event/command.event";
-import * as messageEvent from "./event/message.event";
 import * as disconnectEvent from "./event/disconnect.event";
+import * as messageEvent from "./event/message.event";
+import { isLogged } from "./middleware/websocket/isLogged.middleware";
+dotenv.config();
+import routes from './routes';
 
 const app = express();
 

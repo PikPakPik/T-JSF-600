@@ -1,30 +1,25 @@
-import { SocketContext } from "@/context/SocketContext";
+import useSocketStore from "@/store/useSocketStore";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { io } from "socket.io-client";
 import SideBarChat from "./chat/SideBarChat";
 
-export const Chat = () => {
-  const socket = io("http://localhost:3000", {
-    extraHeaders: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+export const ChatLayout = () => {
+  const { connect, disconnect } = useSocketStore();
 
   useEffect(() => {
+    connect();
+
     return () => {
-      socket.disconnect();
+      disconnect();
     };
-  }, [socket]);
+  }, [connect, disconnect]);
 
   return (
-    <SocketContext.Provider value={socket}>
-      <div className="flex flex-row h-full overflow-hidden">
-        <SideBarChat />
-        <div className="flex flex-col w-full h-full mx-6 ">
-          <Outlet />
-        </div>
+    <div className="flex flex-row h-full overflow-hidden">
+      <SideBarChat />
+      <div className="flex flex-col w-full h-full mx-6 ">
+        <Outlet />
       </div>
-    </SocketContext.Provider>
+    </div>
   );
 };

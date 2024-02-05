@@ -45,6 +45,12 @@
         "placeholder": "Type your message here...",
         "send": "Send"
       }
+    },
+    "room": {
+      "user": {
+        "joined":"{{name}} joined the channel",
+        "exited":"{{name}} left the channel"
+      }
     }
   }
 }

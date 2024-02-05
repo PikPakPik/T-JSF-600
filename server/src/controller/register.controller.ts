@@ -26,6 +26,7 @@ export const register = async (
   user.username = result.username;
   user.password = bcrypt.hashSync(result.password, 10);
   user.email = result.email;
+  user.createdAt = new Date().toISOString();
   try {
     await user.save();
     await User.findOneAndUpdate(

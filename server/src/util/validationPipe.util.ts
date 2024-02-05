@@ -1,6 +1,6 @@
-import {plainToClass, plainToInstance} from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
-import {ValidationErrorException} from "../exception/ValidationError.exception";
+import { ValidationErrorException } from "../exception/ValidationError.exception";
 
 export const validationPipe = async (schema: new () => {}, requestObject: object) => {
   const transformedClass: any = plainToInstance(schema, requestObject);

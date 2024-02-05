@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Chat } from "./components/ChatLayout";
+import { ChatLayout } from "./components/ChatLayout";
 import Layout from "./components/Layout";
 import { DiscussionChat } from "./components/chat/DiscussionChat";
 import { AuthProvider } from "./context/AuthContext";
@@ -12,6 +12,7 @@ import { HomeChat } from "./pages/Chat/HomeChat";
 import Home from "./pages/Home";
 import { Login } from "./pages/Profile/Login";
 import { Signup } from "./pages/Profile/Signup";
+import { DiscussionPrivateChat } from "./components/chat/DiscussionPrivateChat";
 
 const App = () => {
   const PrivateRoute = ({
@@ -74,13 +75,16 @@ const App = () => {
                   path="/chat"
                   element={
                     <PrivateRoute
-                      element={<Chat />}
+                      element={<ChatLayout />}
                       fallback={<Navigate to="/" />}
                     />
                   }
                 >
                   <Route index element={<HomeChat />} />
                   <Route path=":roomId" element={<DiscussionChat />} />
+                  <Route path="user">
+                    <Route path=":user" element={<DiscussionPrivateChat />} />
+                  </Route>
                 </Route>
                 <Route path="*" element={<Navigate to="/" />} />
               </Route>

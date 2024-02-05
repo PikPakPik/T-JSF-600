@@ -44,6 +44,15 @@
       "message": {
         "placeholder": "Écrivez votre message ici...",
         "send": "Envoyer"
+      },
+      "privateMessage": {
+        "error": "Pour envoyer un message privé il faut que le message commence par /msg <username> <message>"
+      }
+    },
+    "room": {
+      "user": {
+        "joined":"{{name}} a rejoint le canal",
+        "exited":"{{name}} a quitté le canal"
       }
     }
   }

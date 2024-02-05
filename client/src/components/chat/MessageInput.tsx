@@ -1,18 +1,27 @@
 // MessageInput.tsx
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export const MessageInput = ({
   onSendMessage,
   show,
+  messageTo
 }: {
   onSendMessage: (message: string) => void;
   show: boolean;
+  messageTo?: string | null;
 }) => {
   const [message, setMessage] = useState("");
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (messageTo !== undefined) {
+      setMessage(`/msg ${messageTo} `);
+    }
+  }, [messageTo]);
 
   const handleInputChange = (event: {
     target: { value: SetStateAction<string> };
@@ -21,8 +30,18 @@ export const MessageInput = ({
   };
 
   const handleButtonClick = () => {
-    onSendMessage(message);
-    setMessage("");
+    if(messageTo !== undefined) {
+      const [command, messageTo] = message.split(" ");
+      if (command === "/msg") {
+        onSendMessage(message);
+        setMessage(`/msg ${messageTo} `);
+      } else {
+        toast.error(t("chat.privateMessage.error"));
+      }
+    } else {
+      onSendMessage(message);
+      setMessage("");
+    }
   };
 
   return (

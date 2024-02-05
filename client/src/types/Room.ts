@@ -4,4 +4,5 @@ export type Room = {
   createdAt: string;
   isDefault?: boolean;
   slug?: string;
+  isJoined?: boolean;
 };
