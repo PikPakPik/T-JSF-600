@@ -1,4 +1,4 @@
-name: Generate docs of backend
+name: AsyncAPI Documentation
 
 on:
   push:
@@ -6,24 +6,31 @@ on:
       - '*'
 
 jobs:
-  generate:
+  validate:
     runs-on: ubuntu-latest
     steps:
+      - name: Get Repo
+        uses: actions/checkout@v2
+        
+      - name: Validate AsyncAPI file
+        id: validate
+        uses: asyncapi/github-action-for-cli@v3.1.1 
+        with:
+          command: validate
+          filepath: docs/my-asyncapi.yml
 
-    - name: Checkout repo
-      uses: actions/checkout@v2
+  generate:
+    needs: validate
+    runs-on: ubuntu-latest
+    if: ${{ needs.validate.outputs.status == 'success' }}
+    steps:
+      - name: Get Repo
+        uses: actions/checkout@v2
       
-    - name: Generating HTML from my AsyncAPI document
-      uses: asyncapi/github-action-for-cli@v3.1.1 
-      with:
-        template: '@asyncapi/html-template@0.9.0'  
-        filepath: docs/asyncapi.yaml
-        parameters: -p baseHref=/test-experiment/${{ github.ref_slug }}/ sidebarOrganization=byTags #space separated list of key/values
-        output: generated-html
-      
-    - name: Deploy GH page
-      uses: JamesIves/github-pages-deploy-action@3.4.2
-      with:
-        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: generated-html
+      - name: Generate AsyncAPI documentation
+        uses: asyncapi/github-action-for-cli@v3.1.1 
+        with:
+          template: '@asyncapi/html-template@0.9.0'  
+          filepath: docs/asyncapi.yaml
+          parameters: -p baseHref=/test-experiment/${{ github.ref_slug }}/ sidebarOrganization=byTags #space separated list of key/values
+          output: generated-html
