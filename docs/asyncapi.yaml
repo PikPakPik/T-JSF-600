@@ -1,0 +1,121 @@
+asyncapi: 2.4.0
+info:
+  title: Chat Application WebSocket API
+  version: '1.0.0'
+  description: Cette API permet une communication en temps réel entre les utilisateurs dans un système de chat.
+
+servers:
+  socketio:
+    url: ws://localhost:{port}
+    protocol: ws
+    description: Serveur socketIO
+    variables:
+      port:
+        default: '3000'
+        description: Port sécurisé par défaut
+  API:
+      url: http://localhost:{port}
+      protocol: http
+      description: Serveur API
+      variables:
+        port:
+          default: '3000'
+          description: Port sécurisé par défaut
+channels:
+  /message:
+    description: Canal pour envoyer et recevoir des messages
+    publish:
+      operationId: sendMessage
+      message:
+        $ref: '#/components/messages/ChatMessage'
+    subscribe:
+      operationId: receiveMessage
+      message:
+        $ref: '#/components/messages/ChatMessage'
+
+  /notification:
+    description: Canal pour recevoir des notifications
+    subscribe:
+      operationId: receiveNotification
+      message:
+        $ref: '#/components/messages/Notification'
+
+  /command/{commandName}:
+    description: Canal pour envoyer des commandes au serveur
+    parameters:
+      commandName:
+        description: Nom de la commande
+        schema:
+          type: string
+    publish:
+      operationId: sendCommand
+      message:
+        $ref: '#/components/messages/Command'
+
+components:
+  messages:
+    ChatMessage:
+      name: ChatMessage
+      title: Chat Message
+      summary: Message envoyé ou reçu dans une salle de chat
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          user:
+            type: string
+            format: uuid
+            description: ID de l'utilisateur qui envoie le message
+          message:
+            type: string
+            description: Contenu du message
+          room:
+            type: string
+            format: uuid
+            description: ID de la salle de chat où le message est envoyé
+          createdAt:
+            type: string
+            format: date-time
+            description: Date et heure de création du message
+
+    Notification:
+      name: Notification
+      title: Notification
+      summary: Notification envoyée aux utilisateurs
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          event:
+            type: string
+            description: Type d'événement de la notification
+          user:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              username:
+                type: string
+            description: Informations sur l'utilisateur concerné par la notification
+
+    Command:
+      name: Command
+      title: Command
+      summary: Commande envoyée au serveur
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          command:
+            type: string
+            description: Nom de la commande
+          data:
+            type: object
+            additionalProperties: true
+            description: Données associées à la commande
+
+  securitySchemes:
+    userToken:
+      type: userPassword
+      description: Token pour authentifier l'utilisateur via WebSocket

@@ -16,7 +16,7 @@ export const DiscussionPrivateChat = () => {
   const fetchData = useCallback(async () => {
     try {
       const response = await fetch(
-        `http://10.29.126.16:3000/api/privateMessages/${user}`,
+        `http://localhost:3000/api/privateMessages/${user}`,
         {
           method: "GET",
           headers: {

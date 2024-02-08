@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // Constantes pour les URLs et les clés
-const API_URL = "http://10.29.126.16:3000/api";
+const API_URL = "http://localhost:3000/api";
 const TOKEN_KEY = "token";
 
 interface AuthProviderProps {
