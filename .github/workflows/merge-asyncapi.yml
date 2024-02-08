@@ -15,4 +15,4 @@ jobs:
       uses: asyncapi/github-action-for-cli@v3.1.1 
       with:
         command: validate
-        filepath: docs/asyncapi.yml
+        filepath: /github/workspace/docs/asyncapi.yml
