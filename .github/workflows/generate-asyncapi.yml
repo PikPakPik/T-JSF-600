@@ -2,23 +2,9 @@ name: AsyncAPI Documentation
 
 on:
   push:
-    branches:
-      - '*'
+    branches: [ main ]
 
 jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Repo
-        uses: actions/checkout@v2
-        
-      - name: Validate AsyncAPI file
-        id: validate
-        uses: asyncapi/github-action-for-cli@v3.1.1 
-        with:
-          command: validate
-          filepath: docs/asyncapi.yml
-
   generate:
     needs: validate
     runs-on: ubuntu-latest
