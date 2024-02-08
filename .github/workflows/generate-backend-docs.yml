@@ -2,7 +2,7 @@ name: Generate docs of backend
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   generate:
