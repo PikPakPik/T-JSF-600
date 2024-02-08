@@ -1,4 +1,4 @@
-name: Validate AsyncAPI document
+name: Validate AsyncAPI Document
 
 on:
   pull_request:
