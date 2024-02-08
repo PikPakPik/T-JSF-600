@@ -10,15 +10,9 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
-
-    - name: List files
-      run: ls -l
-
-    - name: Copy AsyncAPI document to the root
-      run: cp docs/asyncapi.yml asyncapi.yml
       
     - name: Validating AsyncAPI document
       uses: asyncapi/github-action-for-cli@v3.1.1 
       with:
         command: validate
-        filepath: docs/asyncapi.yml
+        filepath: docs/asyncapi.yaml
