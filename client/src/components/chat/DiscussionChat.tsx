@@ -17,7 +17,7 @@ export const DiscussionChat = () => {
   const fetchData = useCallback(async () => {
     try {
       const response = await fetch(
-        `http://10.29.126.16:3000/api/rooms/${roomId}/messages`,
+        `http://localhost:3000/api/rooms/${roomId}/messages`,
         {
           method: "GET",
           headers: {

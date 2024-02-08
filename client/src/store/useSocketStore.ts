@@ -11,7 +11,7 @@ interface SocketState {
 const useSocketStore = create<SocketState>((set) => ({
   socket: null,
   connect: () => {
-    const socket = io("http://10.29.126.16:3000", {
+    const socket = io("ws://localhost:3000", {
       extraHeaders: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

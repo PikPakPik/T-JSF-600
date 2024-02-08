@@ -19,7 +19,7 @@ export default function SideBarChat() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("http://10.29.126.16:3000/api/rooms", {
+      const response = await fetch("http://localhost:3000/api/rooms", {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -38,7 +38,7 @@ export default function SideBarChat() {
 
     async function fetchConnectedUsers() {
       const response = await fetch(
-        "http://10.29.126.16:3000/api/user/connected",
+        "http://localhost:3000/api/user/connected",
         {
           method: "GET",
           headers: {
