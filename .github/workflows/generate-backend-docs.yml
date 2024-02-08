@@ -2,7 +2,8 @@ name: Generate docs of backend
 
 on:
   push:
-    branches: [ main ]
+  branches:
+    - '*'
 
 jobs:
   generate:
@@ -17,7 +18,7 @@ jobs:
       with:
         template: '@asyncapi/html-template@0.9.0'  
         filepath: docs/asyncapi.yaml
-        parameters: -p baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
+        parameters: -p baseHref=/test-experiment/${{ github.ref_slug }}/ sidebarOrganization=byTags #space separated list of key/values
         output: generated-html
       
     - name: Deploy GH page
