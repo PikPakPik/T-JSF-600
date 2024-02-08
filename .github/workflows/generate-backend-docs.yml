@@ -1,0 +1,28 @@
+name: Generate docs of backend
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      
+    - name: Generating HTML from my AsyncAPI document
+      uses: asyncapi/github-action-for-cli@v3.1.1 
+      with:
+        template: '@asyncapi/html-template@0.9.0'  
+        filepath: docs/asyncapi.yaml
+        parameters: -p baseHref=/test-experiment/ sidebarOrganization=byTags #space separated list of key/values
+        output: generated-html
+      
+    - name: Deploy GH page
+      uses: JamesIves/github-pages-deploy-action@3.4.2
+      with:
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: generated-html
