@@ -26,3 +26,10 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
           FOLDER: generated-html-
+  start_ci:
+    runs-on: ubuntu-latest
+    needs: generate
+    steps:
+      - name: Start CI
+        run: |
+          gh workflow run 'Deploy to Vercel' --ref gh-pages
