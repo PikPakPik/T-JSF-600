@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: generate
     steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Start CI
         run: |
           gh workflow run 'Deploy to Vercel' --ref gh-pages
