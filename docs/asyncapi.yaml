@@ -96,7 +96,7 @@ components:
     Command:
       name: Command
       title: Command
-      summary: Commande envoyée au serveur
+      summary: Commande envoyée au serveur pour effectuer une action
       contentType: application/json
       payload:
         type: object
