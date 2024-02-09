@@ -1,6 +1,7 @@
 # IRC Chat
 
-IRC Chat est une application de messagerie en temps réel avec la possiblité de créer des cannaux et d'envoyer des messages privées
+IRC Chat est une application de messagerie en temps réel avec la possiblité de créer des cannaux et d'envoyer des messages privées  
+Documentation Socket.IO & API : https://irc-docs.atressel.dev/
 
 ## Features
 - Création/Supréssion/Modification de cannaux
