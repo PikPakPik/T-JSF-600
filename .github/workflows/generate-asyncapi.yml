@@ -34,6 +34,8 @@ jobs:
         run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - name: Get Repo
         uses: actions/checkout@v2
+      - name: Change branch
+        run: git checkout gh-pages
       - name: Start CI
         run: |
           gh workflow run 'Deploy to Vercel' --ref gh-pages
