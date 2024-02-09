@@ -3,7 +3,6 @@ info:
   title: Chat Application WebSocket API
   version: '1.0.0'
   description: Cette API permet une communication en temps réel entre les utilisateurs dans un système de chat.
-
 servers:
   socketio:
     url: ws://localhost:{port}
@@ -32,14 +31,12 @@ channels:
       operationId: receiveMessage
       message:
         $ref: '#/components/messages/ChatMessage'
-
   /notification:
     description: Canal pour recevoir des notifications
     subscribe:
       operationId: receiveNotification
       message:
         $ref: '#/components/messages/Notification'
-
   /command/{commandName}:
     description: Canal pour envoyer des commandes au serveur
     parameters:
@@ -51,7 +48,6 @@ channels:
       operationId: sendCommand
       message:
         $ref: '#/components/messages/Command'
-
 components:
   messages:
     ChatMessage:
@@ -77,7 +73,6 @@ components:
             type: string
             format: date-time
             description: Date et heure de création du message
-
     Notification:
       name: Notification
       title: Notification
@@ -98,7 +93,6 @@ components:
               username:
                 type: string
             description: Informations sur l'utilisateur concerné par la notification
-
     Command:
       name: Command
       title: Command
