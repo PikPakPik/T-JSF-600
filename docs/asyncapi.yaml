@@ -8,7 +8,7 @@ servers:
   socketio:
     url: ws://localhost:{port}
     protocol: ws
-    description: Serveur socketIO
+    description: Serveur socket.io.
     variables:
       port:
         default: '3000'
@@ -118,4 +118,4 @@ components:
   securitySchemes:
     userToken:
       type: userPassword
-      description: Token pour authentifier l'utilisateur via WebSocket
+      description: Token pour authentifier l'utilisateur via WebSocket ou HTTP

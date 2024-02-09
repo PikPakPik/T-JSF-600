@@ -1,16 +1,13 @@
 name: AsyncAPI Documentation
-env:
-  VERCEL_ORG_ID: team_kcjTHO01wARyYfHTUdhefXbC
-  VERCEL_PROJECT_ID: prj_eIKgZ5SOOPMWKl4ed1hAbnDZ15kV
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+permissions:
+  contents: write
+  actions: write
 jobs:
   generate:
-    needs: validate
     runs-on: ubuntu-latest
-    if: ${{ needs.validate.outputs.status == 'success' }}
     steps:
       - name: Get Repo
         uses: actions/checkout@v2
@@ -18,18 +15,12 @@ jobs:
       - name: Generate AsyncAPI documentation
         uses: asyncapi/github-action-for-cli@v3.1.1 
         with:
-          template: '@asyncapi/html-template@0.9.0'  
+          template: '@asyncapi/html-template@0.28.0'  
           filepath: docs/asyncapi.yaml
-          parameters: -p baseHref=/test-experiment/${{ github.ref_slug }}/ sidebarOrganization=byTags #space separated list of key/values
           output: generated-html-
-  deploy:
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=v7IfgLaThQMlamL3OKJGPoPs
-      - name: Build Project Artifacts
-        run: vercel build --token=v7IfgLaThQMlamL3OKJGPoPs
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --token=v7IfgLaThQMlamL3OKJGPoPs
+      - name: Deploy GH page
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: generated-html-
