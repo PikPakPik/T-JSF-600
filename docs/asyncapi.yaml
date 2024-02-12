@@ -5,7 +5,7 @@ info:
   description: API pour une application de chat incluant WebSocket et HTTP API.
 servers:
   websocket:
-    url: wss://votre-domaine.com
+    url: ws://votre-domaine.com
     protocol: ws
     description: Serveur WebSocket sécurisé pour l'application de chat.
   api:
