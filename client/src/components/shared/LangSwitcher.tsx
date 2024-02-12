@@ -5,15 +5,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const LangSwitcher = () => {
+  const [langs] = useState(["fr", "gb", "de", "es"]);
   const { i18n } = useTranslation();
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     localStorage.setItem("lng", lng);
   };
+
+
 
   return (
     <DropdownMenu>
@@ -30,12 +34,11 @@ const LangSwitcher = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-0" align="center">
         <>
-          <DropdownMenuItem onClick={() => changeLanguage("fr")}>
-            <img src="https://flagcdn.com/w20/fr.png" alt="fr" />
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => changeLanguage("gb")}>
-            <img src="https://flagcdn.com/w20/gb.png" alt="gb" />
-          </DropdownMenuItem>
+          {langs.map((lang) => (
+            <DropdownMenuItem key={lang} onClick={() => changeLanguage(lang)}>
+              <img src={`https://flagcdn.com/w20/${lang}.png`} alt={lang} />
+            </DropdownMenuItem>
+          ))}
         </>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,0 +1,56 @@
+{
+  "translation": {
+    "theme": {
+      "light": "Hell",
+      "dark": "Dunkel",
+      "system": "System"
+    },
+    "profile_dropdown": {
+      "not_connected": {
+        "signin": "Anmelden",
+        "signup": "Registrieren"
+      },
+      "connected": {
+        "profile": "Profil",
+        "settings": "Einstellungen",
+        "logout": "Abmelden"
+      }
+    },
+    "home": {
+      "h1_title": "Willkommen bei IRC Chat",
+      "p_description": "Eine einfache Chat-App, entwickelt mit React, Vite, TailwindCSS und Socket.IO",
+      "signin": "Anmelden",
+      "signup": "Registrieren"
+    },
+    "signin": {
+      "h1_title": "Anmelden",
+      "email_username": "E-Mail oder Benutzername",
+      "password": "Passwort",
+      "signup": "Registrieren",
+      "no_account": "Sie haben noch keinen Account?"
+    },
+    "signup": {
+      "h1_title": "Registrieren",
+      "email": "E-Mail",
+      "username": "Benutzername",
+      "password": "Passwort",
+      "signin": "Anmelden",
+      "already_account": "Sie haben bereits einen Account?"
+    },
+    "chat": {
+      "rooms": "Kanäle",
+      "home": "Startseite",
+      "users": "Benutzer",
+      "message": {
+        "placeholder": "Geben Sie hier Ihre Nachricht ein...",
+        "send": "Senden"
+      }
+    },
+    "room": {
+      "user": {
+        "joined":"{{name}} ist dem Kanal beigetreten",
+        "exited":"{{name}} hat den Kanal verlassen"
+      }
+    }
+  }
+}

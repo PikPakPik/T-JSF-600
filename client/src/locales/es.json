@@ -1,0 +1,56 @@
+{
+  "translation": {
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+    "profile_dropdown": {
+      "not_connected": {
+        "signin": "Iniciar sesión",
+        "signup": "Registrarse"
+      },
+      "connected": {
+        "profile": "Perfil",
+        "settings": "Configuración",
+        "logout": "Cerrar sesión"
+      }
+    },
+    "home": {
+      "h1_title": "Bienvenido a IRC Chat",
+      "p_description": "Una aplicación de chat simple, desarrollada con React, Vite, TailwindCSS y Socket.IO",
+      "signin": "Iniciar sesión",
+      "signup": "Registrarse"
+    },
+    "signin": {
+      "h1_title": "Iniciar sesión",
+      "email_username": "Correo electrónico o nombre de usuario",
+      "password": "Contraseña",
+      "signup": "Registrarse",
+      "no_account": "¿No tienes una cuenta?"
+    },
+    "signup": {
+      "h1_title": "Registrarse",
+      "email": "Correo electrónico",
+      "username": "Nombre de usuario",
+      "password": "Contraseña",
+      "signin": "Iniciar sesión",
+      "already_account": "¿Ya tienes una cuenta?"
+    },
+    "chat": {
+      "rooms": "Canales",
+      "home": "Inicio",
+      "users": "Usuarios",
+      "message": {
+        "placeholder": "Ingrese su mensaje aquí...",
+        "send": "Enviar"
+      }
+    },
+    "room": {
+      "user": {
+        "joined":"{{name}} se ha unido al canal",
+        "exited":"{{name}} ha salido del canal"
+      }
+    }
+  }
+}

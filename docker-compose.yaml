@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   server:
+    restart: always
     build:
       context: ./server/
       dockerfile: Dockerfile
@@ -13,6 +14,7 @@ services:
       - 3000:3000
 
   mongodb:
+    restart: always
     image: mongo:latest
     ports:
       - 27017:27017
@@ -22,6 +24,7 @@ services:
       - db_data:/data/db
 
   client:
+    restart: always
     build:
       context: ./client/
       dockerfile: Dockerfile
@@ -33,6 +36,7 @@ services:
       - 5173:5173
 
   mongo-gui:
+    restart: always
     image: ugleiton/mongo-gui
     ports:
       - "4321:4321"
