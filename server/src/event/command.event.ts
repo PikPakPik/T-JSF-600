@@ -325,6 +325,7 @@ export const quitRoom = async (io: Server, socket: Socket, arg: any) => {
   return socket.emit("command:quit", {
     success: true,
     message: "room.quit.exited",
+    room: searchRoom._id,
   });
 };
 
@@ -405,7 +406,11 @@ export const privateMessage = async (io: Server, socket: Socket, arg: any) => {
     });
     socket
       .to(searchUser.socketId)
-      .emit("private_message", { from: fromUsername, message: arg.message, userId: user._id });
+      .emit("private_message", {
+        from: fromUsername,
+        message: arg.message,
+        userId: user._id,
+      });
   }
 
   return socket.emit("command:msg", {

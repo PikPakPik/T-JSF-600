@@ -37,15 +37,12 @@ export default function SideBarChat() {
     }
 
     async function fetchConnectedUsers() {
-      const response = await fetch(
-        "http://localhost:3000/api/user/connected",
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await fetch("http://localhost:3000/api/user/connected", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
       const data = await response.json();
 
       const filteredUsers = data.users.filter(
@@ -71,30 +68,30 @@ export default function SideBarChat() {
     };
   }, [socket, user]);
 
-  const handleJoinRoom = async (room: Room) => {
-    navigate(`/chat/${room._id}`);
-  };
-
   useEffect(() => {
     const handleJoin = (data: any) => {
-      const updatedRooms = rooms.map((room: Room) => {
-        if (room._id === data.room) {
-          return { ...room, isJoined: true };
-        }
-        return room;
+      console.log(data);
+      setRooms((prevRooms) => {
+        return prevRooms.map((room: Room) => {
+          if (room._id === data.room) {
+            return { ...room, isJoined: true };
+          }
+          return room;
+        });
       });
-      setRooms(updatedRooms);
       navigate(`/chat/${data.room}`);
     };
 
     const handleQuit = (data: any) => {
-      const updatedRooms = rooms.map((room: Room) => {
-        if (room._id === data.room) {
-          return { ...room, isJoined: false };
-        }
-        return room;
+      console.log(data);
+      setRooms((prevRooms) => {
+        return prevRooms.map((room: Room) => {
+          if (room._id === data.room) {
+            return { ...room, isJoined: false };
+          }
+          return room;
+        });
       });
-      setRooms(updatedRooms);
       navigate("/chat");
     };
 
@@ -106,6 +103,10 @@ export default function SideBarChat() {
       socket?.off("command:quit", handleQuit);
     };
   }, [rooms, socket, navigate]);
+
+  const handleJoinRoom = (room: Room) => {
+    navigate(`/chat/${room._id}`);
+  };
 
   return (
     <div
@@ -161,7 +162,11 @@ export default function SideBarChat() {
           </h3>
           <ul className="space-y-2">
             {users.map((user: User) => (
-              <li className="flex items-center space-x-2" key={user._id} onClick={() => navigate(`/chat/user/${user._id}`)}>
+              <li
+                className="flex items-center space-x-2"
+                key={user._id}
+                onClick={() => navigate(`/chat/user/${user._id}`)}
+              >
                 <Avatar className="w-6 h-6">
                   <AvatarImage
                     alt="User Avatar"

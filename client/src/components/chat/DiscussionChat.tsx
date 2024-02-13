@@ -1,10 +1,10 @@
 import useSocketStore from "@/store/useSocketStore";
 import { Message } from "@/types/Message";
+import { t } from "i18next";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MessageChat } from "./MessageChat";
 import { MessageInput } from "./MessageInput";
-import { t } from "i18next";
 
 export const DiscussionChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -38,7 +38,7 @@ export const DiscussionChat = () => {
     return () => {
       setMessages([]);
     };
-  }, [fetchData, roomId]);
+  }, [fetchData, roomId, socket]);
 
   useEffect(() => {
     const handleMessage = (data: any) => {
@@ -83,7 +83,6 @@ export const DiscussionChat = () => {
     socket?.on("command:list", handleCommandList);
     socket?.on("command:users", handleCommandUsers);
     socket?.on("notification", handleNotification);
-    socket;
 
     return () => {
       socket?.off("message", handleMessage);
