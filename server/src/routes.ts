@@ -5,6 +5,7 @@ import * as privateMessageController from './controller/privateMessage.controlle
 import * as registerController from './controller/register.controller';
 import * as roomController from './controller/room.controller';
 import * as userController from './controller/user.controller';
+import Room from './entity/Room.entity';
 import { isLogged } from "./middleware/express/isLogged.middleware";
 const router = express.Router();
 
@@ -15,6 +16,23 @@ mongoose.connect(`mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_
         console.log("Database connection error");
         console.log(err);
     });
+
+var db = mongoose.connection;
+db.once('open', () => {
+    const defaultRoom = new Room({
+        name: 'Général',
+        isDefault: true,
+        createdBy: null,
+        createdAt: new Date().toISOString(),
+    });
+    
+    defaultRoom.save().then(() => {
+        console.log("Default room created");
+    }).catch(err => {
+        console.log("Error creating default room");
+        console.log(err);
+    });
+});
 
 router.get('/', (req: any, res: any) => {
     res.json({
