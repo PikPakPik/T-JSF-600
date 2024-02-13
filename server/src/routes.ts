@@ -18,18 +18,27 @@ mongoose.connect(`mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_
     });
 
 var db = mongoose.connection;
-db.once('open', () => {
-    const defaultRoom = new Room({
-        name: 'Général',
-        isDefault: true,
-        createdBy: null,
-        createdAt: new Date().toISOString(),
-    });
-    
-    defaultRoom.save().then(() => {
-        console.log("Default room created");
+db.once('open', () => {$
+    Room.findOne({ isDefault: true }).then((room) => {
+        if (room) {
+            console.log("Default room already exists");
+        } else {
+            const defaultRoom = new Room({
+                name: 'Général',
+                isDefault: true,
+                createdBy: null,
+                createdAt: new Date().toISOString(),
+            });
+
+            defaultRoom.save().then(() => {
+                console.log("Default room created");
+            }).catch(err => {
+                console.log("Error creating default room");
+                console.log(err);
+            });
+        }
     }).catch(err => {
-        console.log("Error creating default room");
+        console.log("Error checking default room");
         console.log(err);
     });
 });
