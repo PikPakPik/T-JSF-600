@@ -18,7 +18,7 @@ mongoose.connect(`mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_
     });
 
 var db = mongoose.connection;
-db.once('open', () => {$
+db.once('open', () => {
     Room.findOne({ isDefault: true }).then((room) => {
         if (room) {
             console.log("Default room already exists");
