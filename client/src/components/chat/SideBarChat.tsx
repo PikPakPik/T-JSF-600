@@ -70,7 +70,9 @@ export default function SideBarChat() {
 
   useEffect(() => {
     const handleJoin = (data: any) => {
-      console.log(data);
+      if (!data.success) {
+        return;
+      }
       setRooms((prevRooms) => {
         return prevRooms.map((room: Room) => {
           if (room._id === data.room) {
@@ -83,7 +85,9 @@ export default function SideBarChat() {
     };
 
     const handleQuit = (data: any) => {
-      console.log(data);
+      if (!data.success) {
+        return;
+      }
       setRooms((prevRooms) => {
         return prevRooms.map((room: Room) => {
           if (room._id === data.room) {
@@ -105,7 +109,10 @@ export default function SideBarChat() {
   }, [rooms, socket, navigate]);
 
   const handleJoinRoom = (room: Room) => {
-    navigate(`/chat/${room._id}`);
+    if (room._id) {
+      navigate(`/chat/${room._id}`);
+      socket?.emit("command:join", { name: room.name });
+    }
   };
 
   return (

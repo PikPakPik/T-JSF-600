@@ -34,6 +34,7 @@ export const DiscussionChat = () => {
   }, [roomId]);
 
   useEffect(() => {
+    if (roomId === undefined) return;
     fetchData();
     return () => {
       setMessages([]);
@@ -98,6 +99,7 @@ export const DiscussionChat = () => {
 
   const handleSendMessage = (message: string) => {
     if (!message) return;
+    socket?.emit("command:join", { name: roomName.current });
     const [command, ...args] = message.split(" ");
     switch (command.substring(1)) {
       case "join":
